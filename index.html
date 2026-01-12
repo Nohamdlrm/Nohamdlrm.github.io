@@ -8,8 +8,6 @@
 <!-- Quicksand Font -->
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- rebuild -->
-
 <style>
 /* ================= ROOT ================= */
 :root{
@@ -93,13 +91,13 @@ section{padding:120px 10%;position:relative;}
 .news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;}
 .news-card{background:var(--panel);border-radius:30px;padding:30px;box-shadow:var(--shadow);transition:.5s;position:relative;opacity:0;transform:translateY(20px);}
 .news-card.visible{opacity:1;transform:translateY(0);}
-.news-card img{width:100%;border-radius:20px;margin-bottom:15px;}
+.news-card img{width:100%;border-radius:20px;margin-bottom:15px;object-fit:cover;max-height:250px;}
 .news-card h3{font-size:1.6rem;margin-bottom:10px;}
-.news-card p{color:var(--muted);margin-bottom:10px;}
+.news-card p{color:var(--muted);margin-bottom:10px;word-break:break-word;}
 .news-card .status{font-weight:700;display:flex;align-items:center;gap:5px;}
 .news-card .status.green{color:var(--green);}
 .news-card .status.red{color:var(--red);}
-.news-card button{position:absolute;top:15px;right:15px;padding:6px 12px;background:var(--red);color:white;border:none;border-radius:8px;cursor:pointer;}
+.news-card button{position:absolute;top:15px;right:15px;padding:6px 12px;background:var(--red);color:white;border:none;border-radius:8px;cursor:pointer;display:none;}
 
 /* ================= FORM ================= */
 #news-form{max-width:700px;margin:0 auto 60px;background:var(--panel);padding:40px;border-radius:30px;box-shadow:var(--shadow);display:none;}
@@ -125,16 +123,33 @@ background:var(--panel);padding:40px;border-radius:30px;box-shadow:var(--shadow)
 #maintenance-overlay{
 position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);color:var(--text);display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;z-index:4000;
 }
+#maintenance-overlay .emoji{font-size:80px;margin-bottom:25px;animation:rotateEmoji 2s linear infinite;}
+@keyframes rotateEmoji{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 #maintenance-overlay h1{font-size:3rem;margin-bottom:20px;color:var(--red);}
 #maintenance-overlay p{font-size:1.2rem;color:var(--muted);}
 #maintenance-overlay button{margin-top:30px;padding:12px 25px;border:none;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;font-weight:700;cursor:pointer;transition:.3s;}
 #maintenance-overlay button:hover{transform:translateY(-2px) scale(1.05);}
-</style>
-</head>
 
+/* DISCORD ANIMÉ */
+.discord-animated{
+display:inline-block;
+padding:15px 40px;
+border-radius:40px;
+background:linear-gradient(135deg,#5865F2,#22d3ee);
+color:white;
+font-weight:800;
+text-decoration:none;
+font-size:1.2rem;
+box-shadow:0 0 30px rgba(88,101,242,.6);
+animation:pulseDiscord 2s infinite;
+transition:.4s;
+}
+.discord-animated:hover{transform:scale(1.1);box-shadow:0 0 50px rgba(88,101,242,1);}
+@keyframes pulseDiscord{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+</style>
 <body>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero">
 <div class="welcome-msg">Bienvenue sur notre nouveau site !</div>
 <h1>Digital Campus <span>Rosa Parks</span></h1>
@@ -200,7 +215,7 @@ position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);color:va
 <!-- CTA -->
 <section class="cta">
 <h2>Accédez au campus et Discord</h2>
-<a href="https://discord.gg/X9KRZesCuX" target="_blank" class="btn">Discord</a>
+<a href="https://discord.gg/X9KRZesCuX" target="_blank" class="discord-animated">Discord</a>
 </section>
 
 <!-- FOOTER -->
@@ -222,36 +237,29 @@ position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);color:va
 
 <!-- MAINTENANCE -->
 <div id="maintenance-overlay">
+<div class="emoji">⚙️</div>
 <h1>Notre site est actuellement en maintenance...</h1>
 <p>Nous reviendrons très bientôt !</p>
 <button onclick="deactivateMaintenance()">Se connecter (admin)</button>
 </div>
 
+<!-- POPUP DESACTIVATION MAINTENANCE -->
+<div id="confirm-maintenance" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:5000;align-items:center;justify-content:center;">
+<div style="background:var(--panel);padding:40px;border-radius:30px;max-width:420px;text-align:center;animation:popupAppear .5s;">
+<h3>Désactiver la maintenance ?</h3>
+<p style="margin:20px 0;color:var(--muted)">Le site redeviendra accessible à tous.</p>
+<button onclick="confirmDisableMaintenance(true)" style="margin-right:10px;">Oui</button>
+<button onclick="confirmDisableMaintenance(false)" style="background:var(--red);">Non</button>
+</div>
+</div>
+
 <script>
 // ================= THEME TOGGLE =================
-function toggleTheme(){
-document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark';
-}
+function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';}
 
 // ================= COUNTERS =================
-function animateCounter(el){
-const target = +el.dataset.target;
-let current = 0;
-const step = target/60;
-const interval = setInterval(()=>{
-current+=step;
-if(current>=target){el.innerText=target;clearInterval(interval);}
-else el.innerText=Math.ceil(current);
-},20);
-}
-const observer = new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
-entry.target.classList.add('visible');
-}
-});
-},{threshold:0.5});
+function animateCounter(el){const target=+el.dataset.target;let current=0;const step=target/60;const interval=setInterval(()=>{current+=step;if(current>=target){el.innerText=target;clearInterval(interval);}else el.innerText=Math.ceil(current);},20);}
+const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('[data-target]').forEach(animateCounter);entry.target.classList.add('visible');}});},{threshold:0.5});
 document.querySelectorAll('.stat,.equipe-card').forEach(el=>observer.observe(el));
 
 // ================= LOGIN =================
@@ -259,28 +267,22 @@ let adminConnected=false;
 function showLogin(){document.getElementById('login-popup').style.display='flex';}
 function closeLogin(){document.getElementById('login-popup').style.display='none';}
 function loginAdmin(){
-const user = document.getElementById('login-user').value;
-const pass = document.getElementById('login-pass').value;
-if(user==='campusrp' && pass==='campus123'){
+const user=document.getElementById('login-user').value;
+const pass=document.getElementById('login-pass').value;
+if(user==='campusrp'&&pass==='campus123'){
 adminConnected=true;
-document.getElementById('login-popup').style.display='none';
+closeLogin();
 document.querySelector('.btn-login').style.display='none';
 document.querySelector('.btn-logout').style.display='inline-block';
 document.getElementById('news-form').style.display='block';
 document.getElementById('btn-maintenance').style.display='inline-block';
-alert("Connexion réussie !");
-} else alert("Identifiant ou mot de passe incorrect !");
+if(maintenanceActive){document.getElementById('confirm-maintenance').style.display='flex';}else{alert("Connexion réussie !");}
+}else alert("Identifiant ou mot de passe incorrect !");
 }
-function logout(){
-adminConnected=false;
-document.querySelector('.btn-login').style.display='inline-block';
-document.querySelector('.btn-logout').style.display='none';
-document.getElementById('news-form').style.display='none';
-document.getElementById('btn-maintenance').style.display='none';
-}
+function logout(){adminConnected=false;document.querySelector('.btn-login').style.display='inline-block';document.querySelector('.btn-logout').style.display='none';document.getElementById('news-form').style.display='none';document.getElementById('btn-maintenance').style.display='none';renderNews();}
 
 // ================= ACTUALITES =================
-let newsList=[];
+let newsList=JSON.parse(localStorage.getItem('newsList')||'[]');
 const newsGrid=document.getElementById('news-grid');
 const newsForm=document.getElementById('news-form');
 const noNewsMsg=document.getElementById('no-news-msg');
@@ -300,12 +302,12 @@ ${adminConnected?'<button onclick="deleteNews('+index+')">Supprimer</button>':''
 `;
 newsGrid.appendChild(card);
 });
+localStorage.setItem('newsList',JSON.stringify(newsList));
 }
 
 function deleteNews(id){newsList.splice(id,1);renderNews();}
 
-// Ajouter actualité
-newsForm.addEventListener('submit', e=>{
+newsForm.addEventListener('submit',e=>{
 e.preventDefault();
 const title=document.getElementById('news-title').value;
 const desc=document.getElementById('news-desc').value;
@@ -321,109 +323,24 @@ setInterval(()=>{
 const now=Date.now();
 newsList=newsList.filter(n=>now-n.date<2*24*60*60*1000);
 renderNews();
-},60*1000); // check chaque minute
+},60*1000);
 
 // ================= MAINTENANCE =================
 let maintenanceActive=false;
 const maintenanceOverlay=document.getElementById('maintenance-overlay');
-function toggleMaintenance(){
-maintenanceActive=true;
-maintenanceOverlay.style.display='flex';
+function toggleMaintenance(){maintenanceActive=true;maintenanceOverlay.style.display='flex';}
+function deactivateMaintenance(){showLogin();}
+
+// ================= CONFIRMATION MAINTENANCE =================
+function confirmDisableMaintenance(choice){
+document.getElementById('confirm-maintenance').style.display='none';
+if(choice){maintenanceActive=false;maintenanceOverlay.style.display='none';alert("Maintenance désactivée ✅");}
 }
-function deactivateMaintenance(){maintenanceActive=false;maintenanceOverlay.style.display='none';}
 
 // ================= INITIAL =================
 renderNews();
 </script>
 
-<!-- ================= AJOUT AMÉLIORATIONS ================= -->
-
-<!-- BOUTON THEME -->
-<div class="theme-toggle" onclick="toggleTheme()">🌙</div>
-
-<!-- POPUP CONFIRMATION MAINTENANCE -->
-<div id="confirm-maintenance" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:5000;align-items:center;justify-content:center;">
-<div style="background:var(--panel);padding:40px;border-radius:30px;max-width:420px;text-align:center;animation:popupAppear .5s;">
-<h3>Désactiver la maintenance ?</h3>
-<p style="margin:20px 0;color:var(--muted)">Le site redeviendra accessible à tous.</p>
-<button onclick="confirmDisableMaintenance(true)" style="margin-right:10px;">Oui</button>
-<button onclick="confirmDisableMaintenance(false)" style="background:var(--red);">Non</button>
-</div>
-</div>
-
-<!-- DISCORD FOOTER ANIMÉ -->
-<div style="text-align:center;margin:60px 0;">
-<a href="https://discord.gg/X9KRZesCuX" target="_blank" class="discord-animated">💬 Discord</a>
-</div>
-
-<style>
-/* DISCORD ANIMÉ */
-.discord-animated{
-display:inline-block;
-padding:15px 40px;
-border-radius:40px;
-background:linear-gradient(135deg,#5865F2,#22d3ee);
-color:white;
-font-weight:800;
-text-decoration:none;
-font-size:1.2rem;
-box-shadow:0 0 30px rgba(88,101,242,.6);
-animation:pulseDiscord 2s infinite;
-transition:.4s;
-}
-.discord-animated:hover{transform:scale(1.1);box-shadow:0 0 50px rgba(88,101,242,1);}
-@keyframes pulseDiscord{
-0%,100%{transform:scale(1);}
-50%{transform:scale(1.05);}
-}
-
-/* MAINTENANCE ANIM */
-#maintenance-overlay::before{
-content:'';
-width:80px;height:80px;
-border:6px solid var(--border);
-border-top:6px solid var(--primary);
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin-bottom:30px;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
-</style>
-
-<script>
-/* CONFIRMATION MAINTENANCE */
-function deactivateMaintenance(){
-showLogin();
-}
-
-function loginAdmin(){
-const user=document.getElementById('login-user').value;
-const pass=document.getElementById('login-pass').value;
-if(user==='campusrp' && pass==='campus123'){
-adminConnected=true;
-closeLogin();
-document.querySelector('.btn-login').style.display='none';
-document.querySelector('.btn-logout').style.display='inline-block';
-document.getElementById('news-form').style.display='block';
-document.getElementById('btn-maintenance').style.display='inline-block';
-if(maintenanceActive){
-document.getElementById('confirm-maintenance').style.display='flex';
-} else alert("Connexion réussie !");
-} else alert("Identifiant ou mot de passe incorrect !");
-}
-
-function confirmDisableMaintenance(choice){
-document.getElementById('confirm-maintenance').style.display='none';
-if(choice){
-maintenanceActive=false;
-maintenanceOverlay.style.display='none';
-alert("Maintenance désactivée ✅");
-}
-}
-</script>
-
 <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</div>
-
 </body>
-
 </html>
