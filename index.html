@@ -1,3 +1,5 @@
+<body>
+
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
 <head>
@@ -343,6 +345,35 @@ renderNews();
 
 <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</div>
 
+  <!-- Scripts JS -->
+  <script>
+    // ================= THEME TOGGLE =================
+    function toggleTheme() {
+        document.documentElement.dataset.theme =
+            document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+
+    // ================= COUNTERS =================
+    function animateCounter(el) {
+        const target = +el.dataset.target;
+        let current = 0;
+        const step = target / 60;
+        const interval = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                el.innerText = target;
+                clearInterval(interval);
+            } else {
+                el.innerText = Math.ceil(current);
+            }
+        }, 20);
+    }
+
+    // … tout le reste de ton code JavaScript …
+  </script>
+</body>
+
+
 // ================= THEME TOGGLE =================
 function toggleTheme() {
     document.documentElement.dataset.theme =
@@ -499,4 +530,5 @@ renderNews();
 
 </body>
 </html>
+
 
