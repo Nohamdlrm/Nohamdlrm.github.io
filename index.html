@@ -236,7 +236,138 @@ transition:.4s;
 </div>
 
 <!-- MAINTENANCE -->
+<!-- MAINTENANCE ULTRA STYLÉE -->
+<div id="maintenance-overlay">
+  <div class="maintenance-content">
+    <div class="maintenance-logo">
+      <span>C</span><span>R</span><span>P</span>
+    </div>
+    <h1 class="glitch" data-text="Campus Rosa Parks">Campus Rosa Parks</h1>
+    <p>🚧 Nous travaillons sur une nouvelle version du site.<br>Patience, nous serons de retour très bientôt !</p>
+    <button id="btn-show-login">Admin: désactiver maintenance</button>
+  </div>
+</div>
 
+<!-- POPUP DE CONNEXION ADMIN -->
+<div id="login-popup">
+  <div class="popup-content">
+    <span class="close-popup">×</span>
+    <h3>Connexion Admin</h3>
+    <input type="text" id="login-user" placeholder="Identifiant">
+    <input type="password" id="login-pass" placeholder="Mot de passe">
+    <button id="btn-login-admin">Se connecter</button>
+  </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+body, html { margin:0; padding:0; font-family:'Quicksand',sans-serif; }
+
+#maintenance-overlay {
+  position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg,#0f172a,#1e293b,#0f172a);
+  background-size: 400% 400%; animation:bgAnimate 15s ease infinite;
+  color:white; text-align:center;
+}
+
+@keyframes bgAnimate {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+.maintenance-content { max-width:600px; padding:20px; }
+
+.maintenance-logo { display:flex; justify-content:center; gap:20px; font-size:4rem; margin-bottom:20px; animation:logoBounce 1.5s infinite; }
+.maintenance-logo span { color:#60a5fa; }
+@keyframes logoBounce {
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-20px);}
+}
+
+/* Effet glitch sur le titre */
+.glitch {
+  font-size:3rem; font-weight:700; position:relative; color:#60a5fa; text-transform:uppercase;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position:absolute; left:0; top:0; width:100%; height:100%;
+  opacity:0.8; color:#22d3ee; mix-blend-mode:screen;
+}
+.glitch::before { animation:glitchTop 2s infinite linear alternate-reverse; }
+.glitch::after { animation:glitchBottom 2s infinite linear alternate-reverse; }
+@keyframes glitchTop {
+  0%{transform:translate(2px,-2px);} 25%{transform:translate(-2px,2px);}
+  50%{transform:translate(2px,2px);} 75%{transform:translate(-2px,-2px);} 100%{transform:translate(0,0);}
+}
+@keyframes glitchBottom {
+  0%{transform:translate(-2px,2px);} 25%{transform:translate(2px,-2px);}
+  50%{transform:translate(-2px,-2px);} 75%{transform:translate(2px,2px);} 100%{transform:translate(0,0);}
+}
+
+#maintenance-overlay p { font-size:1.2rem; color:#cbd5e1; margin-bottom:40px; }
+
+#btn-show-login {
+  padding:12px 35px; border:none; border-radius:30px; background:linear-gradient(135deg,#60a5fa,#22d3ee);
+  font-weight:600; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.3); transition:transform .3s,box-shadow .3s;
+}
+#btn-show-login:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 10px 25px rgba(0,0,0,0.5); }
+
+/* POPUP ADMIN */
+#login-popup {
+  display:none; /* <<< IMPORTANT: cacher la popup au départ */
+  position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:10000; align-items:center; justify-content:center;
+}
+#login-popup .popup-content {
+  background:#1e293b; padding:30px; border-radius:25px; max-width:400px; width:90%; text-align:center;
+  animation:popupAppear 0.5s ease;
+}
+#login-popup h3 { color:#60a5fa; margin-bottom:20px; }
+#login-popup input { width:100%; padding:12px; margin-bottom:15px; border-radius:12px; border:none; }
+#login-popup button { padding:12px 20px; background:linear-gradient(135deg,#60a5fa,#22d3ee); border:none; color:white; border-radius:18px; font-weight:600; cursor:pointer; transition:.3s; width:100%; }
+#login-popup button:hover { transform:translateY(-2px) scale(1.05); }
+
+#login-popup .close-popup { position:absolute; top:15px; right:15px; font-size:22px; cursor:pointer; color:white; }
+
+@keyframes popupAppear { 0%{opacity:0;transform:scale(0.7);}100%{opacity:1;transform:scale(1);} }
+</style>
+
+<script>
+const maintenanceOverlay = document.getElementById('maintenance-overlay');
+const btnShowLogin = document.getElementById('btn-show-login');
+const loginPopup = document.getElementById('login-popup');
+const btnClosePopup = loginPopup.querySelector('.close-popup');
+const btnLoginAdmin = document.getElementById('btn-login-admin');
+
+let maintenanceActive = true;
+
+// **La popup s'active uniquement quand on clique sur le bouton**
+btnShowLogin.addEventListener('click', () => {
+    loginPopup.style.display = 'flex';
+});
+
+// Fermer popup
+btnClosePopup.addEventListener('click', () => {
+    loginPopup.style.display = 'none';
+});
+
+// Connexion admin
+btnLoginAdmin.addEventListener('click', () => {
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value;
+
+    if (user === 'campusrp' && pass === 'campus123') {
+        maintenanceActive = false;
+        maintenanceOverlay.style.display = 'none';
+        loginPopup.style.display = 'none';
+        alert("Maintenance désactivée ✅");
+    } else {
+        alert("Identifiant ou mot de passe incorrect !");
+    }
+});
+</script>
 // ================= THEME TOGGLE =================
 function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';}
 
@@ -467,6 +598,7 @@ renderNews();
 
 </script>
 </body>
+
 
 
 
