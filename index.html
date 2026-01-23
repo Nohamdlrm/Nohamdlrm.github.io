@@ -239,22 +239,22 @@ transition:.4s;
 <!-- MAINTENANCE -->
 </style>
 <body>
-// ================= THEME TOGGLE =================
+<!-- FOOTER -->
 function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';}
 
-// ================= COUNTERS =================
+<!-- FOOTER -->
 function animateCounter(el){const target=+el.dataset.target;let current=0;const step=target/60;const interval=setInterval(()=>{current+=step;if(current>=target){el.innerText=target;clearInterval(interval);}else el.innerText=Math.ceil(current);},20);}
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('[data-target]').forEach(animateCounter);entry.target.classList.add('visible');}});},{threshold:0.5});
 document.querySelectorAll('.stat,.equipe-card').forEach(el=>observer.observe(el));
 
-// ================= LOGIN =================
+<!-- FOOTER -->
 let adminConnected=false;
 function showLogin(){document.getElementById('login-popup').style.display='flex';}
 function closeLogin(){document.getElementById('login-popup').style.display='none';}
 function loginAdmin(){
 const user=document.getElementById('login-user').value;
 const pass=document.getElementById('login-pass').value;
-if(user==='campusrp'&&pass==='campus123'){
+if(user==='campusrp'&&pass==='NKJ2272//'){
 adminConnected=true;
 closeLogin();
 document.querySelector('.btn-login').style.display='none';
@@ -266,7 +266,7 @@ if(maintenanceActive){document.getElementById('confirm-maintenance').style.displ
 }
 function logout(){adminConnected=false;document.querySelector('.btn-login').style.display='inline-block';document.querySelector('.btn-logout').style.display='none';document.getElementById('news-form').style.display='none';document.getElementById('btn-maintenance').style.display='none';renderNews();}
 
-// ================= ACTUALITES =================
+<!-- FOOTER -->
 let newsList=JSON.parse(localStorage.getItem('newsList')||'[]');
 const newsGrid=document.getElementById('news-grid');
 const newsForm=document.getElementById('news-form');
@@ -303,26 +303,26 @@ renderNews();
 newsForm.reset();
 });
 
-// Supprimer automatiquement après 2 jours
+<!-- FOOTER -->
 setInterval(()=>{
 const now=Date.now();
 newsList=newsList.filter(n=>now-n.date<2*24*60*60*1000);
 renderNews();
 },60*1000);
 
-// ================= MAINTENANCE =================
+<!-- FOOTER -->
 let maintenanceActive=false;
 const maintenanceOverlay=document.getElementById('maintenance-overlay');
 function toggleMaintenance(){maintenanceActive=true;maintenanceOverlay.style.display='flex';}
 function deactivateMaintenance(){showLogin();}
 
-// ================= CONFIRMATION MAINTENANCE =================
+<!-- FOOTER -->
 function confirmDisableMaintenance(choice){
 document.getElementById('confirm-maintenance').style.display='none';
 if(choice){maintenanceActive=false;maintenanceOverlay.style.display='none';alert("Maintenance désactivée ✅");}
 }
 
-// ================= INITIAL =================
+<!-- FOOTER -->
 renderNews();
 </script>
 
@@ -469,6 +469,7 @@ renderNews();
 
 </script>
 </body>
+
 
 
 
