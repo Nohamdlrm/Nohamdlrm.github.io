@@ -239,94 +239,179 @@ transition:.4s;
 <!-- MAINTENANCE -->
 </style>
 <body>
-<!-- FOOTER -->
-function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';}
-
-<!-- FOOTER -->
-function animateCounter(el){const target=+el.dataset.target;let current=0;const step=target/60;const interval=setInterval(()=>{current+=step;if(current>=target){el.innerText=target;clearInterval(interval);}else el.innerText=Math.ceil(current);},20);}
-const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('[data-target]').forEach(animateCounter);entry.target.classList.add('visible');}});},{threshold:0.5});
-document.querySelectorAll('.stat,.equipe-card').forEach(el=>observer.observe(el));
-
-<!-- FOOTER -->
-let adminConnected=false;
-function showLogin(){document.getElementById('login-popup').style.display='flex';}
-function closeLogin(){document.getElementById('login-popup').style.display='none';}
-function loginAdmin(){
-const user=document.getElementById('login-user').value;
-const pass=document.getElementById('login-pass').value;
-if(user==='campusrp'&&pass==='NKJ2272//'){
-adminConnected=true;
-closeLogin();
-document.querySelector('.btn-login').style.display='none';
-document.querySelector('.btn-logout').style.display='inline-block';
-document.getElementById('news-form').style.display='block';
-document.getElementById('btn-maintenance').style.display='inline-block';
-if(maintenanceActive){document.getElementById('confirm-maintenance').style.display='flex';}else{alert("Connexion réussie !");}
-}else alert("Identifiant ou mot de passe incorrect !");
+<script>
+// ================= THEME =================
+function toggleTheme() {
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
 }
-function logout(){adminConnected=false;document.querySelector('.btn-login').style.display='inline-block';document.querySelector('.btn-logout').style.display='none';document.getElementById('news-form').style.display='none';document.getElementById('btn-maintenance').style.display='none';renderNews();}
 
-<!-- FOOTER -->
-let newsList=JSON.parse(localStorage.getItem('newsList')||'[]');
-const newsGrid=document.getElementById('news-grid');
-const newsForm=document.getElementById('news-form');
-const noNewsMsg=document.getElementById('no-news-msg');
+// ================= ANIMATION STATS =================
+function animateCounter(el) {
+  const target = Number(el.dataset.target);
+  let current = 0;
+  const step = target / 60;
 
-function renderNews(){
-newsGrid.innerHTML='';
-if(newsList.length===0){newsGrid.appendChild(noNewsMsg);}
-newsList.forEach((news,index)=>{
-const card=document.createElement('div');
-card.className='news-card visible';
-card.innerHTML=`
-${news.image?'<img src="'+news.image+'">':''}
-<h3>${news.title}</h3>
-<p>${news.desc}</p>
-<p class="status ${news.status==='recent'?'green':'red'}">${news.status==='recent'?'⬆ Récemment ajouté':'⬇ Ancienne actualité'}</p>
-${adminConnected?'<button onclick="deleteNews('+index+')">Supprimer</button>':''}
-`;
-newsGrid.appendChild(card);
+  const interval = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      el.innerText = target;
+      clearInterval(interval);
+    } else {
+      el.innerText = Math.ceil(current);
+    }
+  }, 20);
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target
+        .querySelectorAll('[data-target]')
+        .forEach(animateCounter);
+
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat, .equipe-card')
+  .forEach(el => observer.observe(el));
+
+// ================= ADMIN LOGIN =================
+let adminConnected = false;
+
+function showLogin() {
+  document.getElementById('login-popup').style.display = 'flex';
+}
+
+function closeLogin() {
+  document.getElementById('login-popup').style.display = 'none';
+}
+
+function loginAdmin() {
+  const user = document.getElementById('login-user').value;
+  const pass = document.getElementById('login-pass').value;
+
+  if (user === 'campusrp' && pass === 'NKJ2272//') {
+    adminConnected = true;
+    closeLogin();
+
+    document.querySelector('.btn-login').style.display = 'none';
+    document.querySelector('.btn-logout').style.display = 'inline-block';
+    document.getElementById('news-form').style.display = 'block';
+    document.getElementById('btn-maintenance').style.display = 'inline-block';
+
+    maintenanceActive
+      ? document.getElementById('confirm-maintenance').style.display = 'flex'
+      : alert("Connexion réussie !");
+  } else {
+    alert("Identifiant ou mot de passe incorrect !");
+  }
+}
+
+function logout() {
+  adminConnected = false;
+
+  document.querySelector('.btn-login').style.display = 'inline-block';
+  document.querySelector('.btn-logout').style.display = 'none';
+  document.getElementById('news-form').style.display = 'none';
+  document.getElementById('btn-maintenance').style.display = 'none';
+
+  renderNews();
+}
+
+// ================= NEWS =================
+let newsList = JSON.parse(localStorage.getItem('newsList') || '[]');
+
+const newsGrid = document.getElementById('news-grid');
+const newsForm = document.getElementById('news-form');
+const noNewsMsg = document.getElementById('no-news-msg');
+
+function renderNews() {
+  newsGrid.innerHTML = '';
+
+  if (newsList.length === 0) {
+    newsGrid.appendChild(noNewsMsg);
+    return;
+  }
+
+  newsList.forEach((news, index) => {
+    const card = document.createElement('div');
+    card.className = 'news-card visible';
+
+    card.innerHTML = `
+      ${news.image ? `<img src="${news.image}" alt="">` : ''}
+      <h3>${news.title}</h3>
+      <p>${news.desc}</p>
+      <p class="status ${news.status === 'recent' ? 'green' : 'red'}">
+        ${news.status === 'recent' ? '⬆ Récemment ajouté' : '⬇ Ancienne actualité'}
+      </p>
+      ${adminConnected ? `<button onclick="deleteNews(${index})">Supprimer</button>` : ''}
+    `;
+
+    newsGrid.appendChild(card);
+  });
+
+  localStorage.setItem('newsList', JSON.stringify(newsList));
+}
+
+function deleteNews(id) {
+  newsList.splice(id, 1);
+  renderNews();
+}
+
+newsForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const news = {
+    title: document.getElementById('news-title').value,
+    desc: document.getElementById('news-desc').value,
+    status: document.getElementById('news-status').value,
+    image: document.getElementById('news-image').value,
+    date: Date.now()
+  };
+
+  newsList.unshift(news);
+  renderNews();
+  newsForm.reset();
 });
-localStorage.setItem('newsList',JSON.stringify(newsList));
+
+// Suppression auto des news après 48h
+setInterval(() => {
+  const now = Date.now();
+  newsList = newsList.filter(n => now - n.date < 48 * 60 * 60 * 1000);
+  renderNews();
+}, 60000);
+
+// ================= MAINTENANCE =================
+let maintenanceActive = false;
+const maintenanceOverlay = document.getElementById('maintenance-overlay');
+
+function toggleMaintenance() {
+  maintenanceActive = true;
+  maintenanceOverlay.style.display = 'flex';
 }
 
-function deleteNews(id){newsList.splice(id,1);renderNews();}
-
-newsForm.addEventListener('submit',e=>{
-e.preventDefault();
-const title=document.getElementById('news-title').value;
-const desc=document.getElementById('news-desc').value;
-const status=document.getElementById('news-status').value;
-const image=document.getElementById('news-image').value;
-newsList.unshift({title,desc,status,image,date:Date.now()});
-renderNews();
-newsForm.reset();
-});
-
-<!-- FOOTER -->
-setInterval(()=>{
-const now=Date.now();
-newsList=newsList.filter(n=>now-n.date<2*24*60*60*1000);
-renderNews();
-},60*1000);
-
-<!-- FOOTER -->
-let maintenanceActive=false;
-const maintenanceOverlay=document.getElementById('maintenance-overlay');
-function toggleMaintenance(){maintenanceActive=true;maintenanceOverlay.style.display='flex';}
-function deactivateMaintenance(){showLogin();}
-
-<!-- FOOTER -->
-function confirmDisableMaintenance(choice){
-document.getElementById('confirm-maintenance').style.display='none';
-if(choice){maintenanceActive=false;maintenanceOverlay.style.display='none';alert("Maintenance désactivée ✅");}
+function deactivateMaintenance() {
+  showLogin();
 }
 
-<!-- FOOTER -->
+function confirmDisableMaintenance(choice) {
+  document.getElementById('confirm-maintenance').style.display = 'none';
+
+  if (choice) {
+    maintenanceActive = false;
+    maintenanceOverlay.style.display = 'none';
+    alert("Maintenance désactivée ✅");
+  }
+}
+
+// Init
 renderNews();
 </script>
 
-<div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</div>
+<div class="theme-toggle" onclick="toggleTheme()">☀️</div>
 
 <!-- Scripts JS -->
 <script>
@@ -469,6 +554,7 @@ renderNews();
 
 </script>
 </body>
+
 
 
 
