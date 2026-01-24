@@ -5,562 +5,181 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Campus Rosa Parks</title>
 
-<!-- Quicksand Font -->
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-/* ================= ROOT ================= */
-:root{
---bg:#f3f5fa; --panel:#fff; --panel-soft:#f0f3ff; --text:#0f172a; --muted:#64748b;
---primary:#2563eb; --accent:#06b6d4; --border:#e2e8f0; --shadow:0 20px 50px rgba(0,0,0,.08);
---green:#22c55e; --red:#ef4444; --yellow:#facc15;
-}
-[data-theme="dark"]{
---bg:#050713; --panel:#0c1028; --panel-soft:#12163f; --text:#e5e7eb; --muted:#94a3b8;
---primary:#60a5fa; --accent:#22d3ee; --border:rgba(255,255,255,.08); --shadow:0 30px 80px rgba(0,0,0,.6);
---green:#22c55e; --red:#ef4444; --yellow:#facc15;
-}
+  /* Reset global */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+  }
 
-/* ================= RESET ================= */
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--text);transition:.4s;overflow-x:hidden;}
+  body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8fafc;
+    overflow: hidden;
+    position: relative;
+  }
 
-/* ================= NAV ================= */
-nav{
-position:fixed;top:0;width:100%;background:rgba(255,255,255,.85);backdrop-filter:blur(18px);padding:20px 50px;display:flex;justify-content:space-between;align-items:center;z-index:1000;border-bottom:1px solid var(--border);
-}
-[data-theme="dark"] nav{background:rgba(5,7,19,.85);}
-nav strong{font-size:1.6rem;}
-nav .nav-links a{margin:0 15px;font-weight:600;opacity:.85;text-decoration:none;color:inherit;transition:.3s;}
-nav .nav-links a:hover{opacity:1;color:var(--primary);}
-nav .btn-login, nav .btn-logout{
-padding:10px 25px;border-radius:12px;border:2px solid var(--primary);
-background:linear-gradient(135deg,var(--primary),var(--accent));
-color:white;font-weight:700;cursor:pointer;transition:.4s;margin-left:10px;
-}
-nav .btn-login:hover, nav .btn-logout:hover{transform:translateY(-3px) scale(1.05);}
-nav .btn-discord{
-padding:10px 25px;border-radius:12px;border:2px solid var(--accent);
-background:none;color:var(--accent);font-weight:700;cursor:pointer;transition:.4s;margin-left:15px;
-}
-nav .btn-discord:hover{background:var(--accent);color:white;transform:translateY(-3px) scale(1.05);}
+  /* Fond animé avec formes dynamiques */
+  .bg-shape {
+    position: absolute;
+    width: 180%;
+    height: 180%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #6366f1 20%, transparent 70%);
+    filter: blur(140px);
+    opacity: 0.35;
+    animation: drift1 15s ease-in-out infinite alternate;
+    z-index: 0;
+  }
 
-/* ================= THEME TOGGLE ================= */
-.theme-toggle{
-position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:var(--panel);
-display:grid;place-items:center;font-size:24px;cursor:pointer;box-shadow:var(--shadow);z-index:2000;
-}
+  .bg-shape:nth-child(2) {
+    background: radial-gradient(circle at 70% 70%, #ec4899 25%, transparent 80%);
+    animation: drift2 18s ease-in-out infinite alternate;
+  }
 
-/* ================= HERO ================= */
-.hero{
-min-height:80vh;display:grid;place-items:center;text-align:center;padding:0 10%;position:relative;
-}
-.hero h1{font-size:clamp(2.8rem,6vw,5rem);margin-bottom:20px;}
-.hero h1 span{background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero p{max-width:700px;margin:0 auto;font-size:1.2rem;line-height:1.8;margin-bottom:30px;}
-.hero .welcome-msg{
-position:absolute;top:10px;width:100%;text-align:center;font-size:1.2rem;font-weight:600;color:var(--yellow);
-animation:fadeInDown 1.5s ease forwards;
-}
-@keyframes fadeInDown{0%{opacity:0;transform:translateY(-30px);}100%{opacity:1;transform:translateY(0);}}
+  .bg-shape:nth-child(3) {
+    background: radial-gradient(circle at 50% 50%, #fcd34d 15%, transparent 85%);
+    animation: drift3 22s ease-in-out infinite alternate;
+  }
 
-/* ================= SECTIONS ================= */
-section{padding:120px 10%;position:relative;}
+  @keyframes drift1 { from { transform: translate(-20%, -10%) scale(1); } to { transform: translate(0%, 10%) scale(1.1); } }
+  @keyframes drift2 { from { transform: translate(10%, -20%) scale(1); } to { transform: translate(-10%, 20%) scale(1.05); } }
+  @keyframes drift3 { from { transform: translate(-10%, 10%) scale(1); } to { transform: translate(10%, -10%) scale(1.08); } }
 
-/* ================= STATS ================= */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:50px;margin-bottom:80px;}
-.stat{background:var(--panel);border-radius:40px;padding:60px 40px;box-shadow:var(--shadow);text-align:center;transition:.6s;opacity:0;transform:translateY(30px);}
-.stat.visible{opacity:1;transform:translateY(0);}
-.stat h3{font-size:3rem;margin-bottom:15px;color:var(--primary);}
-.stat p{font-weight:600;color:var(--accent);}
+  /* Container central */
+  .container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    background: rgba(255,255,255,0.9);
+    padding: 60px 50px;
+    border-radius: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    backdrop-filter: blur(14px);
+    max-width: 600px;
+  }
 
-/* ================= EQUIPE ================= */
-.equipe{background:var(--panel-soft);border-radius:60px;padding:120px 10%;text-align:center;}
-.equipe h2{font-size:3.2rem;margin-bottom:60px;}
-.equipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:50px;}
-.equipe-card{background:var(--panel);border-radius:40px;padding:50px 30px;box-shadow:var(--shadow);transition:.6s;opacity:0;transform:translateY(40px);}
-.equipe-card.visible{opacity:1;transform:translateY(0);}
-.equipe-card:hover{transform:translateY(-10px) scale(1.05);}
-.equipe-card h3{font-size:2rem;margin-bottom:20px;}
-.equipe-card p{font-weight:700;color:var(--accent);font-size:2rem;}
+  /* Tag version */
+  .version-tag {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
 
-/* ================= ACTUALITES ================= */
-.actualites{padding:80px 10%;background:var(--bg);}
-.actualites h2{font-size:3rem;margin-bottom:50px;text-align:center;}
-.news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;}
-.news-card{background:var(--panel);border-radius:30px;padding:30px;box-shadow:var(--shadow);transition:.5s;position:relative;opacity:0;transform:translateY(20px);}
-.news-card.visible{opacity:1;transform:translateY(0);}
-.news-card img{width:100%;border-radius:20px;margin-bottom:15px;object-fit:cover;max-height:250px;}
-.news-card h3{font-size:1.6rem;margin-bottom:10px;}
-.news-card p{color:var(--muted);margin-bottom:10px;word-break:break-word;}
-.news-card .status{font-weight:700;display:flex;align-items:center;gap:5px;}
-.news-card .status.green{color:var(--green);}
-.news-card .status.red{color:var(--red);}
-.news-card button{position:absolute;top:15px;right:15px;padding:6px 12px;background:var(--red);color:white;border:none;border-radius:8px;cursor:pointer;display:none;}
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(120deg, #6366f1, #ec4899, #fcd34d);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientText 4s ease infinite, glowText 2.5s ease-in-out infinite alternate;
+    margin-bottom: 20px;
+  }
 
-/* ================= FORM ================= */
-#news-form{max-width:700px;margin:0 auto 60px;background:var(--panel);padding:40px;border-radius:30px;box-shadow:var(--shadow);display:none;}
-#news-form h3{margin-bottom:20px;font-size:1.8rem;text-align:center;}
-#news-form input, #news-form select, #news-form textarea{width:100%;padding:12px 15px;margin-bottom:15px;border-radius:12px;border:1px solid var(--border);background:var(--panel-soft);color:var(--text);}
-#news-form button{width:100%;padding:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;font-weight:700;border:none;border-radius:18px;cursor:pointer;transition:.3s;}
-#news-form button:hover{transform:translateY(-2px) scale(1.05);}
+  @keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 
-/* ================= LOGIN POPUP ================= */
-#login-popup{
-position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:3000;
-}
-#login-popup .popup-content{
-background:var(--panel);padding:40px;border-radius:30px;box-shadow:var(--shadow);width:90%;max-width:400px;text-align:center;position:relative;animation:popupAppear 0.5s ease;
-}
-#login-popup input{width:100%;padding:12px 15px;margin-bottom:15px;border-radius:12px;border:1px solid var(--border);}
-#login-popup button{padding:12px 20px;background:linear-gradient(135deg,var(--primary),var(--accent));border:none;color:white;font-weight:700;border-radius:18px;cursor:pointer;transition:.3s;width:100%;}
-#login-popup button:hover{transform:translateY(-2px) scale(1.05);}
-#login-popup .close-popup{position:absolute;top:15px;right:15px;font-size:22px;cursor:pointer;}
-@keyframes popupAppear{0%{opacity:0;transform:scale(0.7);}100%{opacity:1;transform:scale(1);}}
+  @keyframes glowText {
+    0% { text-shadow: 0 0 15px #8b5cf6, 0 0 30px #f43f5e, 0 0 45px #fcd34d; }
+    100% { text-shadow: 0 0 30px #6366f1, 0 0 60px #ec4899, 0 0 90px #fcd34d; }
+  }
 
-/* ================= MAINTENANCE ================= */
-#maintenance-overlay{
-position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);color:var(--text);display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;z-index:4000;
-}
-#maintenance-overlay .emoji{font-size:80px;margin-bottom:25px;animation:rotateEmoji 2s linear infinite;}
-@keyframes rotateEmoji{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-#maintenance-overlay h1{font-size:3rem;margin-bottom:20px;color:var(--red);}
-#maintenance-overlay p{font-size:1.2rem;color:var(--muted);}
-#maintenance-overlay button{margin-top:30px;padding:12px 25px;border:none;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;font-weight:700;cursor:pointer;transition:.3s;}
-#maintenance-overlay button:hover{transform:translateY(-2px) scale(1.05);}
+  p {
+    font-size: 1.2rem;
+    color: #4b5563;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
 
-/* DISCORD ANIMÉ */
-.discord-animated{
-display:inline-block;
-padding:15px 40px;
-border-radius:40px;
-background:linear-gradient(135deg,#5865F2,#22d3ee);
-color:white;
-font-weight:800;
-text-decoration:none;
-font-size:1.2rem;
-box-shadow:0 0 30px rgba(88,101,242,.6);
-animation:pulseDiscord 2s infinite;
-transition:.4s;
-}
-.discord-animated:hover{transform:scale(1.1);box-shadow:0 0 50px rgba(88,101,242,1);}
-@keyframes pulseDiscord{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+  .feature-list {
+    margin-top: 28px;
+    text-align: left;
+    font-size: 1rem;
+    color: #374151;
+  }
+
+  .feature-list li {
+    margin: 10px 0;
+    padding-left: 20px;
+    position: relative;
+    font-weight: 500;
+  }
+
+  .feature-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(45deg, #6366f1, #ec4899, #fcd34d);
+    border-radius: 50%;
+    animation: pulse 2s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); opacity: 0.8; }
+    to { transform: scale(1.5); opacity: 0.5; }
+  }
+
+  /* Ligne accent moderne */
+  .accent-line {
+    width: 90px;
+    height: 5px;
+    margin: 28px auto;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #6366f1, #ec4899, #fcd34d);
+    animation: lineGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes lineGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.6); }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    h1 { font-size: 2.6rem; }
+    p { font-size: 1rem; }
+    .container { padding: 40px 30px; }
+  }
 </style>
+</head>
+
 <body>
 
-<!-- HERO -->
-<section class="hero">
-<div class="welcome-msg">Bienvenue sur notre nouveau site !</div>
-<h1>Campus <span>Rosa Parks</span></h1>
-<p>Une expérience immersive RP scolaire avec actualités et informations en temps réel.</p>
-</section>
+  <!-- Background shapes -->
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
 
-<!-- NAV -->
-<nav>
-<strong>Campus <span style="color:var(--primary)">Rosa Parks</span></strong>
-<div class="nav-links">
-<a href="#stats">Stats</a>
-<a href="#equipe">Équipe</a>
-<a href="#actualites">Actualités</a>
-</div>
-<div>
-<div class="btn-login" onclick="showLogin()">Se connecter</div>
-<div class="btn-logout" onclick="logout()" style="display:none;">Déconnexion</div>
-<a href="https://discord.gg/X9KRZesCuX" target="_blank" class="btn-discord">Discord</a>
-</div>
-</nav>
+  <!-- Container principal -->
+  <div class="container">
+    <div class="version-tag">Version 2.0.0 — New Modern</div>
+    <h1>Maintenance en cours</h1>
 
-<!-- STATS -->
-<section id="stats">
-<div class="stats">
-<div class="stat"><h3 data-target="2">0</h3><p>Services</p></div>
-<div class="stat"><h3 data-target="230">0</h3><p>Membres</p></div>
-<div class="stat"><h3 data-target="100">0</h3><p>% Immersion</p></div>
-</div>
-</section>
+    <div class="accent-line"></div>
 
-<!-- EQUIPE -->
-<section class="equipe" id="equipe">
-<h2>Notre Équipe</h2>
-<div class="equipe-grid">
-<div class="equipe-card"><h3>Administration</h3><p data-target="4">0</p></div>
-<div class="equipe-card"><h3>Vie scolaire</h3><p data-target="6">0</p></div>
-<div class="equipe-card"><h3>Professeurs</h3><p data-target="24">0</p></div>
-<div class="equipe-card"><h3>Élèves RP</h3><p data-target="15">0</p></div>
-</div>
-<p style="margin-top:50px;font-weight:600;color:var(--accent)">Nous recrutons toujours en Vie scolaire & Professeurs</p>
-</section>
+    <p>Notre site passe à la V2.0.0 ! Profitez bientôt d'une interface plus rapide, fluide et encore plus moderne.</p>
 
-<!-- ACTUALITES -->
-<section class="actualites" id="actualites">
-<h2>Actualités</h2>
-<form id="news-form">
-<h3>Ajouter une actualité</h3>
-<input type="text" id="news-title" placeholder="Titre" required>
-<textarea id="news-desc" rows="4" placeholder="Description" required></textarea>
-<select id="news-status" required>
-<option value="recent">Ajouter récemment</option>
-<option value="old">Ancienne actualité</option>
-</select>
-<input type="text" id="news-image" placeholder="URL de l'image">
-<button type="submit">Ajouter</button>
-</form>
-<div class="news-grid" id="news-grid">
-<p id="no-news-msg" style="text-align:center;font-weight:600;color:var(--muted);">Aucune actualité pour le moment</p>
-</div>
-<button onclick="toggleMaintenance()" style="display:none;margin-top:30px;" id="btn-maintenance">Activer Maintenance</button>
-</section>
+    <ul class="feature-list">
+      <li>Interface ultra-moderne & responsive</li>
+      <li>Animations dynamiques et subtiles</li>
+      <li>Optimisation des performances et du design</li>
+      <li>Nouvelles fonctionnalités premium</li>
+    </ul>
+  </div>
 
-<!-- CTA -->
-<section class="cta">
-<h2>Accédez au campus et Discord</h2>
-<a href="https://discord.gg/X9KRZesCuX" target="_blank" class="discord-animated">Discord</a>
-</section>
-
-<!-- FOOTER -->
-<footer>
-<p>© 2026 Campus Rosa Parks</p>
-<p>Créateur du site : NyxX</p>
-</footer>
-</style>
-<body>
-<!-- LOGIN POPUP -->
-<div id="login-popup">
-<div class="popup-content">
-<span class="close-popup" onclick="closeLogin()">×</span>
-<h3>Connexion Admin</h3>
-<input type="text" id="login-user" placeholder="Identifiant">
-<input type="password" id="login-pass" placeholder="Mot de passe">
-<button onclick="loginAdmin()">Se connecter</button>
-</div>
-</div>
-
-// ================= THEME =================
-function toggleTheme() {
-  const html = document.documentElement;
-  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
-}
-
-// ================= ANIMATION STATS =================
-function animateCounter(el) {
-  const target = Number(el.dataset.target);
-  let current = 0;
-  const step = target / 60;
-
-  const interval = setInterval(() => {
-    current += step;
-    if (current >= target) {
-      el.innerText = target;
-      clearInterval(interval);
-    } else {
-      el.innerText = Math.ceil(current);
-    }
-  }, 20);
-}
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target
-        .querySelectorAll('[data-target]')
-        .forEach(animateCounter);
-
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.stat, .equipe-card')
-  .forEach(el => observer.observe(el));
-
-// ================= ADMIN LOGIN =================
-let adminConnected = false;
-
-function showLogin() {
-  document.getElementById('login-popup').style.display = 'flex';
-}
-
-function closeLogin() {
-  document.getElementById('login-popup').style.display = 'none';
-}
-
-function loginAdmin() {
-  const user = document.getElementById('login-user').value;
-  const pass = document.getElementById('login-pass').value;
-
-  if (user === 'AdminRosaParks' && pass === 'NKJ2272//') {
-    adminConnected = true;
-    closeLogin();
-
-    document.querySelector('.btn-login').style.display = 'none';
-    document.querySelector('.btn-logout').style.display = 'inline-block';
-    document.getElementById('news-form').style.display = 'block';
-    document.getElementById('btn-maintenance').style.display = 'inline-block';
-
-    maintenanceActive
-      ? document.getElementById('confirm-maintenance').style.display = 'flex'
-      : alert("Connexion réussie !");
-  } else {
-    alert("Identifiant ou mot de passe incorrect !");
-  }
-}
-
-function logout() {
-  adminConnected = false;
-
-  document.querySelector('.btn-login').style.display = 'inline-block';
-  document.querySelector('.btn-logout').style.display = 'none';
-  document.getElementById('news-form').style.display = 'none';
-  document.getElementById('btn-maintenance').style.display = 'none';
-
-  renderNews();
-}
-
-// ================= NEWS =================
-let newsList = JSON.parse(localStorage.getItem('newsList') || '[]');
-
-const newsGrid = document.getElementById('news-grid');
-const newsForm = document.getElementById('news-form');
-const noNewsMsg = document.getElementById('no-news-msg');
-
-function renderNews() {
-  newsGrid.innerHTML = '';
-
-  if (newsList.length === 0) {
-    newsGrid.appendChild(noNewsMsg);
-    return;
-  }
-
-  newsList.forEach((news, index) => {
-    const card = document.createElement('div');
-    card.className = 'news-card visible';
-
-    card.innerHTML = `
-      ${news.image ? `<img src="${news.image}" alt="">` : ''}
-      <h3>${news.title}</h3>
-      <p>${news.desc}</p>
-      <p class="status ${news.status === 'recent' ? 'green' : 'red'}">
-        ${news.status === 'recent' ? '⬆ Récemment ajouté' : '⬇ Ancienne actualité'}
-      </p>
-      ${adminConnected ? `<button onclick="deleteNews(${index})">Supprimer</button>` : ''}
-    `;
-
-    newsGrid.appendChild(card);
-  });
-
-  localStorage.setItem('newsList', JSON.stringify(newsList));
-}
-
-function deleteNews(id) {
-  newsList.splice(id, 1);
-  renderNews();
-}
-
-newsForm.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const news = {
-    title: document.getElementById('news-title').value,
-    desc: document.getElementById('news-desc').value,
-    status: document.getElementById('news-status').value,
-    image: document.getElementById('news-image').value,
-    date: Date.now()
-  };
-
-  newsList.unshift(news);
-  renderNews();
-  newsForm.reset();
-});
-
-// Suppression auto des news après 48h
-setInterval(() => {
-  const now = Date.now();
-  newsList = newsList.filter(n => now - n.date < 48 * 60 * 60 * 1000);
-  renderNews();
-}, 60000);
-
-// ================= MAINTENANCE =================
-let maintenanceActive = false;
-const maintenanceOverlay = document.getElementById('maintenance-overlay');
-
-function toggleMaintenance() {
-  maintenanceActive = true;
-  maintenanceOverlay.style.display = 'flex';
-}
-
-function deactivateMaintenance() {
-  showLogin();
-}
-
-function confirmDisableMaintenance(choice) {
-  document.getElementById('confirm-maintenance').style.display = 'none';
-
-  if (choice) {
-    maintenanceActive = false;
-    maintenanceOverlay.style.display = 'none';
-    alert("Maintenance désactivée ✅");
-  }
-}
-
-// Init
-renderNews();
-</script>
-
-<div class="theme-toggle" onclick="toggleTheme()">☀️</div>
-
-<!-- Scripts JS -->
-<script>
-  // ================= THEME TOGGLE =================
-  function toggleTheme() {
-      document.documentElement.dataset.theme =
-          document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  }
-
-  // ================= COUNTERS =================
-  function animateCounter(el) {
-      const target = +el.dataset.target;
-      let current = 0;
-      const step = target / 60;
-      const interval = setInterval(() => {
-          current += step;
-          if (current >= target) {
-              el.innerText = target;
-              clearInterval(interval);
-          } else {
-              el.innerText = Math.ceil(current);
-          }
-      }, 20);
-  }
-
-  const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-          if (entry.isIntersecting) {
-              entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
-              entry.target.classList.add('visible');
-          }
-      });
-  }, { threshold: 0.5 });
-
-  document.querySelectorAll('.stat,.equipe-card').forEach(el => observer.observe(el));
-
-  // ================= LOGIN ADMIN =================
-  let adminConnected = false;
-  let maintenanceActive = false;
-  const maintenanceOverlay = document.getElementById('maintenance-overlay');
-
-  function showLogin() { document.getElementById('login-popup').style.display = 'flex'; }
-  function closeLogin() { document.getElementById('login-popup').style.display = 'none'; }
-
-  function loginAdmin() {
-      const user = document.getElementById('login-user').value;
-      const pass = document.getElementById('login-pass').value;
-
-      if (user === 'AdminRosaParks' && pass === 'NKJ2272//') {
-          adminConnected = true;
-          closeLogin();
-          document.querySelector('.btn-login').style.display = 'none';
-          document.querySelector('.btn-logout').style.display = 'inline-block';
-          document.getElementById('news-form').style.display = 'block';
-          document.getElementById('btn-maintenance').style.display = 'inline-block';
-          alert("Connexion réussie !");
-          if (maintenanceActive) {
-              document.getElementById('confirm-maintenance').style.display = 'flex';
-          }
-          renderNews();
-      } else alert("Identifiant ou mot de passe incorrect !");
-  }
-
-  function logout() {
-      adminConnected = false;
-      document.querySelector('.btn-login').style.display = 'inline-block';
-      document.querySelector('.btn-logout').style.display = 'none';
-      document.getElementById('news-form').style.display = 'none';
-      document.getElementById('btn-maintenance').style.display = 'none';
-      renderNews();
-  }
-
-  // ================= ACTUALITES =================
-  let newsList = JSON.parse(localStorage.getItem('newsList') || '[]');
-  const newsGrid = document.getElementById('news-grid');
-  const newsForm = document.getElementById('news-form');
-  const noNewsMsg = document.getElementById('no-news-msg');
-
-  function renderNews() {
-      newsGrid.innerHTML = '';
-      if (newsList.length === 0) {
-          newsGrid.appendChild(noNewsMsg);
-      } else {
-          newsList.forEach((news, index) => {
-              const card = document.createElement('div');
-              card.className = 'news-card visible';
-              card.innerHTML = `
-                  ${news.image ? '<img src="'+news.image+'">' : ''}
-                  <h3>${news.title}</h3>
-                  <p>${news.desc}</p>
-                  <p class="status ${news.status==='recent'?'green':'red'}">
-                      ${news.status==='recent'?'⬆ Récemment ajouté':'⬇ Ancienne actualité'}
-                  </p>
-                  ${adminConnected?'<button onclick="deleteNews('+index+')">Supprimer</button>':''}
-              `;
-              newsGrid.appendChild(card);
-          });
-      }
-      localStorage.setItem('newsList', JSON.stringify(newsList));
-  }
-
-  function deleteNews(id) { newsList.splice(id, 1); renderNews(); }
-
-  newsForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const title = document.getElementById('news-title').value;
-      const desc = document.getElementById('news-desc').value;
-      const status = document.getElementById('news-status').value;
-      const image = document.getElementById('news-image').value;
-      newsList.unshift({ title, desc, status, image, date: Date.now() });
-      renderNews();
-      newsForm.reset();
-  });
-
-  setInterval(() => {
-      const now = Date.now();
-      newsList = newsList.filter(n => now - n.date < 2*24*60*60*1000);
-      renderNews();
-  }, 60*1000);
-
-  // ================= MAINTENANCE =================
-  function toggleMaintenance() {
-      maintenanceActive = true;
-      maintenanceOverlay.style.display = 'flex';
-  }
-
-  function deactivateMaintenance() { showLogin(); }
-
-  function confirmDisableMaintenance(choice) {
-      document.getElementById('confirm-maintenance').style.display = 'none';
-      if(choice){
-          maintenanceActive = false;
-          maintenanceOverlay.style.display = 'none';
-          alert("Maintenance désactivée ✅");
-      }
-  }
-
-  // ================= INITIAL =================
-  renderNews();
-
-</script>
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
