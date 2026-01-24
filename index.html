@@ -211,6 +211,42 @@ nav .btn-discord:hover{background:var(--accent);color:white;transform:scale(1.05
 <button id="btn-maintenance" onclick="toggleMaintenance()" style="display:none;margin-top:20px;">Activer Maintenance</button>
 </section>
 
+<!-- SERVICES - Embed Discord style -->
+<section id="services" class="services" style="padding:80px 10%; text-align:center;">
+  <h2 style="font-size:2.5rem; color:#00bfff; margin-bottom:40px; text-shadow:0 0 10px #00bfff;">Services - Pronote</h2>
+
+  <div class="discord-embed" style="
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(20px);
+    border-radius:25px;
+    padding:30px 40px;
+    max-width:700px;
+    margin:0 auto;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    transition:.5s;
+    color:white;
+    font-family:'Quicksand',sans-serif;
+  " 
+  onmouseover="this.style.transform='scale(1.03) rotateX(2deg) rotateY(2deg)';" 
+  onmouseout="this.style.transform='scale(1) rotateX(0deg) rotateY(0deg)';">
+
+    <p style="margin-bottom:15px; font-weight:700;">Le Campus Rosa Parks met à disposition le logiciel <strong>Pronote</strong> pour les membres :</p>
+
+    <p style="margin-bottom:15px;">Un espace unique pour enseignants, personnels, élèves et leurs parents. Pronote met à disposition plusieurs services permettant un meilleur suivi de la scolarité des élèves.</p>
+
+    <div style="text-align:left; margin-top:20px;">
+      <p>☁️ <strong>Accès via le site web Pronote</strong><br>
+      ➤ Lien : <a href="#" target="_blank" style="color:#80dfff;text-decoration:underline;">Pronote - Campus Rosa Parks</a></p>
+
+      <p>👨‍💼 <strong>Accès via le Client Pronote (Enseignants et Personnels)</strong><br>
+      ➤ Adresse IP : <code>13.60.37.11</code><br>
+      ➤ Port TCP : <code>49300</code><br>
+      ➤ Désignation : <strong>Campus Rosa Parks</strong></p>
+    </div>
+
+  </div>
+</section>
+
 <!-- POPUPS -->
 <div id="welcome-popup">
 <div class="popup-content">
@@ -308,4 +344,5 @@ renderNews();
 </script>
 </body>
 </html>
+
 
