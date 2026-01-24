@@ -5,148 +5,134 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Campus Rosa Parks</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 /* ================= ROOT ================= */
 :root{
-  --bg:#0a1f3d; --panel:rgba(255,255,255,0.05); --panel-soft:rgba(255,255,255,0.08); 
-  --text:#e0f7ff; --muted:#a0cfff;
-  --primary:#00bfff; --accent:#80dfff; --border:rgba(255,255,255,.2); --shadow:0 20px 40px rgba(0,0,0,.5);
-  --green:#22c55e; --red:#ef4444; --yellow:#facc15;
+--bg:#050713;
+--panel:rgba(10,10,25,0.7);
+--panel-soft:rgba(15,15,40,0.6);
+--text:#e5e7eb;
+--muted:#94a3b8;
+--primary:#00bfff;
+--accent:#80dfff;
+--border:rgba(255,255,255,0.1);
+--shadow:0 20px 50px rgba(0,0,0,0.5);
+--green:#22c55e;
+--red:#ef4444;
+--yellow:#facc15;
+}
+[data-theme="light"]{
+--bg:#f3f5fa; --panel:#fff; --panel-soft:#f0f3ff; --text:#0f172a; --muted:#64748b;
+--primary:#2563eb; --accent:#06b6d4; --border:#e2e8f0; --shadow:0 20px 50px rgba(0,0,0,.08);
+--green:#22c55e; --red:#ef4444; --yellow:#facc15;
 }
 
 /* ================= RESET ================= */
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:.4s;}
 html{scroll-behavior:smooth;}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:.4s;}
 
 /* ================= NAV ================= */
 nav{
-  position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;
-  background:rgba(0,0,0,0.3);backdrop-filter:blur(15px);border-radius:0 0 30px 30px;box-shadow:var(--shadow);z-index:1000;
+position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;
+padding:15px 30px;background:var(--panel);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+z-index:9999;box-shadow:0 5px 25px rgba(0,0,0,0.4);
+flex-wrap:wrap;
 }
-nav strong{font-size:1.8rem;color:var(--primary);}
-nav .nav-links a{margin:0 15px;text-decoration:none;color:var(--text);font-weight:600;transition:.3s;}
-nav .nav-links a:hover{color:var(--accent);}
-nav .btn-login, nav .btn-logout{
-  padding:10px 22px;border-radius:15px;border:none;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-  color:white;font-weight:700;cursor:pointer;transition:.3s;
-}
-nav .btn-login:hover, nav .btn-logout:hover{transform:scale(1.05);}
-nav .btn-discord{
-  padding:10px 22px;border-radius:15px;border:2px solid var(--accent);
-  background:none;color:var(--accent);font-weight:700;margin-left:15px;transition:.3s;
-}
-nav .btn-discord:hover{background:var(--accent);color:white;transform:scale(1.05);}
+nav strong{font-size:1.6rem;}
+.nav-links{display:flex;gap:15px;flex-wrap:wrap;}
+.nav-links a{font-weight:600;color:var(--text);text-decoration:none;transition:.3s;}
+.nav-links a:hover{color:var(--primary);}
+.nav-buttons{display:flex;gap:15px;flex-wrap:wrap;margin-top:5px;}
+.nav-buttons .btn-login, .nav-buttons .btn-logout, .nav-buttons .btn-discord{
+padding:8px 25px;border-radius:12px;font-weight:600;cursor:pointer;transition:.3s;text-align:center;white-space:nowrap;}
+.nav-buttons .btn-login{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border:none;}
+.nav-buttons .btn-logout{background:linear-gradient(135deg,var(--red),var(--yellow));color:#fff;border:none;}
+.nav-buttons .btn-discord{background:none;color:var(--accent);border:2px solid var(--accent);}
+.nav-buttons .btn-login:hover,.nav-buttons .btn-logout:hover,.nav-buttons .btn-discord:hover{transform:scale(1.05);}
 
 /* ================= HERO ================= */
 .hero{
-  min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:0 20px;
-  background:linear-gradient(135deg,#004080,#00bfff);
-  border-radius:0 0 60px 60px;box-shadow:var(--shadow);color:white;
+min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+padding:0 15px;position:relative;
 }
-.hero h1{font-size:clamp(2.5rem,6vw,4rem);margin-bottom:20px;}
-.hero h1 span{color:#80dfff;text-shadow:0 0 10px #00bfff;}
-.hero p{font-size:1.2rem;max-width:700px;margin-bottom:30px;line-height:1.8;font-weight:500;text-shadow:0 0 5px #00bfff;}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);margin-bottom:15px;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{max-width:700px;margin:0 auto 20px;font-size:1.2rem;line-height:1.8;}
+.hero .welcome-msg{
+position:absolute;top:15px;width:100%;text-align:center;font-size:1.2rem;font-weight:600;color:var(--accent);
+animation:fadeInDown 1.5s ease forwards;
+}
+@keyframes fadeInDown{0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
+
+/* ================= SECTIONS ================= */
+section{padding:100px 10%;position:relative;}
+h2{font-size:2.5rem;margin-bottom:40px;color:var(--primary);text-align:center;text-shadow:0 0 5px var(--accent);}
 
 /* ================= STATS ================= */
-.stats{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;margin:50px 10%;text-align:center;
-}
-.stat{
-  background:var(--panel-soft);border-radius:25px;padding:40px;
-  backdrop-filter:blur(15px);box-shadow:0 10px 30px rgba(0,0,0,.5);
-  transition:.5s;opacity:0;transform:translateY(30px) rotateX(0deg) rotateY(0deg);
-}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-bottom:80px;}
+.stat{background:var(--panel-soft);border-radius:25px;padding:40px;text-align:center;box-shadow:var(--shadow);transition:.5s;transform:translateY(20px);opacity:0;}
 .stat.visible{opacity:1;transform:translateY(0);}
-.stat:hover{transform:translateY(-10px) rotateX(5deg) rotateY(5deg) scale(1.05);}
-.stat h3{font-size:2.5rem;color:var(--primary);}
-.stat p{font-weight:700;color:var(--accent);margin-top:10px;}
+.stat h3{font-size:2.5rem;margin-bottom:10px;color:var(--primary);}
+.stat p{font-weight:600;color:var(--accent);}
 
 /* ================= EQUIPE ================= */
-.equipe{
-  padding:80px 10%;text-align:center;
-}
-.equipe h2{
-  font-size:2.8rem;margin-bottom:50px;color:var(--primary);
-  text-shadow:0 0 10px #00bfff;
-}
-.equipe-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;
-}
-.equipe-card{
-  background:var(--panel-soft);border-radius:25px;padding:30px;
-  backdrop-filter:blur(15px);box-shadow:0 10px 30px rgba(0,0,0,.5);
-  transition:.5s;opacity:0;transform:translateY(40px);
-}
+.equipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;}
+.equipe-card{background:var(--panel-soft);border-radius:25px;padding:30px;text-align:center;box-shadow:var(--shadow);transition:.5s;transform:translateY(20px);opacity:0;}
 .equipe-card.visible{opacity:1;transform:translateY(0);}
-.equipe-card:hover{transform:scale(1.07) rotateX(3deg) rotateY(3deg);}
-.equipe-card h3{font-size:1.5rem;margin-bottom:15px;}
-.equipe-card p{font-weight:700;color:var(--accent);font-size:1.3rem;}
+.equipe-card:hover{transform:scale(1.05) translateY(-5px);}
+.equipe-card h3{font-size:1.6rem;margin-bottom:10px;}
+.equipe-card p{font-size:1.8rem;font-weight:700;color:var(--accent);}
+
+/* ================= SERVICES ================= */
+.services-grid{max-width:700px;margin:0 auto;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);
+border-radius:25px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.5);transition:.4s;}
+.services-grid:hover{transform:scale(1.02) rotateX(1deg) rotateY(1deg);}
+.services-grid p{margin-bottom:10px;line-height:1.6;}
+.services-grid a{color:var(--accent);text-decoration:underline;}
 
 /* ================= ACTUALITES ================= */
-.actualites{padding:80px 10%;}
-.actualites h2{font-size:2.5rem;margin-bottom:40px;text-align:center;color:var(--primary);text-shadow:0 0 10px #00bfff;}
-.news-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;
-}
-.news-card{
-  background:var(--panel-soft);border-radius:25px;padding:25px;
-  backdrop-filter:blur(15px);box-shadow:0 10px 30px rgba(0,0,0,.5);
-  opacity:0;transform:translateY(20px);transition:.5s;position:relative;
-}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+.news-card{background:var(--panel-soft);border-radius:20px;padding:20px;box-shadow:var(--shadow);transition:.4s;transform:translateY(20px);opacity:0;}
 .news-card.visible{opacity:1;transform:translateY(0);}
-.news-card:hover{transform:scale(1.05) rotateX(3deg) rotateY(3deg);}
-.news-card img{width:100%;border-radius:15px;margin-bottom:15px;object-fit:cover;height:150px;}
-.news-card h3{font-size:1.3rem;margin-bottom:8px;color:var(--primary);}
-.news-card p{font-size:0.95rem;color:var(--muted);margin-bottom:8px;}
+.news-card img{width:100%;border-radius:15px;object-fit:cover;max-height:200px;margin-bottom:10px;}
+.news-card h3{font-size:1.4rem;margin-bottom:5px;}
+.news-card p{font-size:0.95rem;color:var(--muted);margin-bottom:5px;}
 .news-card .status.green{color:var(--green);}
 .news-card .status.red{color:var(--red);}
-.news-card button{
-  position:absolute;top:10px;right:10px;background:var(--red);color:white;
-  border:none;border-radius:10px;padding:5px 12px;cursor:pointer;
-  transition:.3s;
-}
-.news-card button:hover{transform:scale(1.05);}
+.news-card button{position:absolute;top:10px;right:10px;padding:5px 10px;background:var(--red);color:#fff;border:none;border-radius:8px;cursor:pointer;display:none;}
 
-/* ================= POPUPS ================= */
-#welcome-popup,#login-popup{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;
-  z-index:3000;display:none;
-}
-.popup-content{
-  background:var(--panel-soft);padding:35px;border-radius:30px;
-  max-width:400px;width:90%;text-align:center;box-shadow:0 0 30px rgba(0,0,255,.5);backdrop-filter:blur(15px);
-  animation:popupAnim 0.5s ease;
-}
-.popup-content .close-popup{position:absolute;top:10px;right:15px;font-size:22px;cursor:pointer;}
-.popup-content input, .popup-content button, .popup-content textarea, .popup-content select{
-  width:100%;padding:12px 15px;margin:8px 0;border-radius:12px;border:none;background:rgba(255,255,255,0.1);color:white;outline:none;
-}
-.popup-content button{
-  background:linear-gradient(135deg,#00bfff,#80dfff);
-  color:white;font-weight:700;cursor:pointer;transition:.3s;
-}
-.popup-content button:hover{transform:scale(1.05);}
-@keyframes popupAnim{0%{opacity:0;transform:scale(0.7);}100%{opacity:1;transform:scale(1);}}
+/* ================= LOGIN POPUP ================= */
+#login-popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:10000;display:none;}
+#login-popup .popup-content{background:var(--panel-soft);padding:30px;border-radius:25px;box-shadow:var(--shadow);width:90%;max-width:400px;text-align:center;animation:fadeInDown 0.5s;}
+#login-popup input{width:100%;padding:10px;margin:10px 0;border-radius:12px;border:1px solid var(--border);background:var(--panel);color:var(--text);}
+#login-popup button{width:100%;padding:10px;margin-top:10px;border-radius:15px;border:none;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:700;cursor:pointer;transition:.3s;}
+#login-popup button:hover{transform:scale(1.05);}
+#login-popup .close-popup{position:absolute;top:10px;right:15px;font-size:22px;cursor:pointer;}
 
-/* ================= MAINTENANCE ================= */
-#maintenance-overlay{
-  position:fixed;top:0;left:0;width:100%;height:100%;display:none;
-  background:var(--bg);color:var(--text);align-items:center;justify-content:center;flex-direction:column;z-index:4000;
-}
-#maintenance-overlay .emoji{font-size:80px;margin-bottom:20px;animation:spin 2s linear infinite;}
-@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-#maintenance-overlay h1{color:var(--red);margin-bottom:15px;}
-#maintenance-overlay button{padding:12px 20px;border:none;border-radius:20px;background:linear-gradient(135deg,#00bfff,#80dfff);color:white;font-weight:700;cursor:pointer;transition:.3s;}
-#maintenance-overlay button:hover{transform:scale(1.05);}
+/* ================= CTA ================= */
+.discord-animated{display:inline-block;padding:12px 25px;border-radius:25px;background:linear-gradient(135deg,var(--primary),var(--accent));
+color:white;font-weight:700;text-decoration:none;box-shadow:0 0 20px rgba(0,191,255,0.6);transition:.3s;}
+.discord-animated:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(0,191,255,1);}
 
-/* ================= THEME TOGGLE ================= */
-.theme-toggle{
-  position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;
-  background:var(--panel-soft);display:flex;justify-content:center;align-items:center;font-size:24px;cursor:pointer;box-shadow:0 0 30px #00bfff;
+/* ================= FOOTER ================= */
+footer{padding:20px;text-align:center;background:var(--panel);border-top:1px solid var(--border);position:relative;z-index:1;}
+footer p{margin:5px 0;font-size:0.9rem;color:var(--muted);}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+nav{flex-direction:column;gap:10px;}
+.hero{padding:0 15px;}
+.equipe-grid,.news-grid{grid-template-columns:1fr;}
+.services-grid{padding:20px;}
+.nav-buttons{justify-content:center;}
+}
+@media(max-width:480px){
+nav strong{font-size:1.4rem;}
+.nav-links a{margin:0 5px;font-size:0.9rem;}
+.hero h1{font-size:2rem;}
+.hero p{font-size:1rem;}
+#login-popup .popup-content{padding:20px;}
 }
 </style>
 </head>
@@ -154,8 +140,9 @@ nav .btn-discord:hover{background:var(--accent);color:white;transform:scale(1.05
 
 <!-- HERO -->
 <section class="hero">
+<div class="welcome-msg">🎉 Bienvenue sur la nouvelle version du site - New Dysyan !</div>
 <h1>Campus <span>Rosa Parks</span></h1>
-<p>Bienvenue sur la nouvelle version <b>De notre site</b> ! Profitez du site refait intégralement.</p>
+<p>Une expérience immersive RP scolaire avec actualités, services et informations en temps réel.</p>
 </section>
 
 <!-- NAV -->
@@ -164,20 +151,24 @@ nav .btn-discord:hover{background:var(--accent);color:white;transform:scale(1.05
 <div class="nav-links">
 <a href="#stats">Stats</a>
 <a href="#equipe">Équipe</a>
+<a href="#services">Services</a>
 <a href="#actualites">Actualités</a>
 </div>
-<div>
+<div class="nav-buttons">
 <div class="btn-login" onclick="showLogin()">Se connecter</div>
-<div class="btn-logout" onclick="logout()" style="display:none;">Déconnexion</div>
 <a href="https://discord.gg/X9KRZesCuX" target="_blank" class="btn-discord">Discord</a>
+<div class="btn-logout" onclick="logout()" style="display:none;">Déconnexion</div>
 </div>
 </nav>
 
 <!-- STATS -->
-<section id="stats" class="stats">
+<section id="stats">
+<h2>Stats</h2>
+<div class="stats">
 <div class="stat"><h3 data-target="2">0</h3><p>Services</p></div>
 <div class="stat"><h3 data-target="230">0</h3><p>Membres</p></div>
 <div class="stat"><h3 data-target="100">0</h3><p>% Immersion</p></div>
+</div>
 </section>
 
 <!-- EQUIPE -->
@@ -189,73 +180,54 @@ nav .btn-discord:hover{background:var(--accent);color:white;transform:scale(1.05
 <div class="equipe-card"><h3>Professeurs</h3><p data-target="24">0</p></div>
 <div class="equipe-card"><h3>Élèves RP</h3><p data-target="15">0</p></div>
 </div>
+<p style="margin-top:30px;color:var(--accent);font-weight:600;">Nous recrutons toujours en Vie scolaire & Professeurs</p>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+<h2>Services - Pronote</h2>
+<div class="services-grid">
+<p>📚 Le Campus Rosa Parks met à disposition le logiciel <strong>Pronote</strong> pour les membres :</p>
+<p>Un espace unique pour enseignants, personnels, élèves et leurs parents. Pronote propose plusieurs services pour le suivi de la scolarité.</p>
+<p>☁️ <strong>Accès via le site web Pronote</strong><br>➤ Lien : <a href="https://oneplesk.smartgaulle.fr:8443/login_up.php" target="_blank">Pronote - Campus Rosa Parks</a></p>
+<p>👨‍💼 <strong>Accès via le Client Pronote (Enseignants et Personnels)</strong><br>
+➤ Adresse IP : <code>13.60.37.11</code><br>
+➤ Port TCP : <code>49300</code><br>
+➤ Désignation : Campus Rosa Parks</p>
+<p>✉️ Contact : <a href="mailto:contact@campus-rosaparks.fr" style="color:var(--accent)">contact@campus-rosaparks.fr</a></p>
+</div>
 </section>
 
 <!-- ACTUALITES -->
-<section class="actualites" id="actualites">
+<section id="actualites">
 <h2>Actualités</h2>
-<div class="news-grid" id="news-grid">
-<p id="no-news-msg" style="text-align:center;color:var(--muted);font-weight:600;">Aucune actualité pour le moment</p>
-</div>
-<form id="news-form" style="display:none;">
-<h3>Ajouter une actualité</h3>
+<form id="news-form" style="max-width:700px;margin:0 auto 30px;display:none;">
 <input type="text" id="news-title" placeholder="Titre" required>
-<textarea id="news-desc" rows="4" placeholder="Description" required></textarea>
+<textarea id="news-desc" rows="3" placeholder="Description" required></textarea>
 <select id="news-status" required>
-<option value="recent">Récente</option>
-<option value="old">Ancienne</option>
+<option value="recent">Ajouter récemment</option>
+<option value="old">Ancienne actualité</option>
 </select>
-<input type="text" id="news-image" placeholder="URL image">
+<input type="text" id="news-image" placeholder="URL de l'image">
 <button type="submit">Ajouter</button>
 </form>
-<button id="btn-maintenance" onclick="toggleMaintenance()" style="display:none;margin-top:20px;">Activer Maintenance</button>
+<div class="news-grid" id="news-grid">
+<p id="no-news-msg" style="text-align:center;color:var(--muted);">Aucune actualité pour le moment</p>
+</div>
 </section>
 
-<!-- SERVICES - Embed Discord style -->
-<section id="services" class="services" style="padding:80px 10%; text-align:center;">
-  <h2 style="font-size:2.5rem; color:#00bfff; margin-bottom:40px; text-shadow:0 0 10px #00bfff;">Services - Pronote</h2>
-
-  <div class="discord-embed" style="
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(20px);
-    border-radius:25px;
-    padding:30px 40px;
-    max-width:700px;
-    margin:0 auto;
-    box-shadow:0 10px 30px rgba(0,0,0,0.5);
-    transition:.5s;
-    color:white;
-    font-family:'Quicksand',sans-serif;
-  " 
-  onmouseover="this.style.transform='scale(1.03) rotateX(2deg) rotateY(2deg)';" 
-  onmouseout="this.style.transform='scale(1) rotateX(0deg) rotateY(0deg)';">
-
-    <p style="margin-bottom:15px; font-weight:700;">Le Campus Rosa Parks met à disposition le logiciel <strong>Pronote</strong> pour les membres :</p>
-
-    <p style="margin-bottom:15px;">Un espace unique pour enseignants, personnels, élèves et leurs parents. Pronote met à disposition plusieurs services permettant un meilleur suivi de la scolarité des élèves.</p>
-
-    <div style="text-align:left; margin-top:20px;">
-      <p>☁️ <strong>Accès via le site web Pronote</strong><br>
-      ➤ Lien : <a href="#" target="_blank" style="color:#80dfff;text-decoration:underline;">Pronote - Campus Rosa Parks</a></p>
-
-      <p>👨‍💼 <strong>Accès via le Client Pronote (Enseignants et Personnels)</strong><br>
-      ➤ Adresse IP : <code>13.60.37.11</code><br>
-      ➤ Port TCP : <code>49300</code><br>
-      ➤ Désignation : <strong>Campus Rosa Parks</strong></p>
-    </div>
-
-  </div>
+<!-- CTA -->
+<section class="cta" style="text-align:center;margin:60px 0;">
+<a href="https://discord.gg/X9KRZesCuX" target="_blank" class="discord-animated">Discord</a>
 </section>
 
-<!-- POPUPS -->
-<div id="welcome-popup">
-<div class="popup-content">
-<h3>🎉 Bienvenue sur la nouvelle version <b>New Dysyan</b> !</h3>
-<p>Profitez d’un site totalement refait et moderne.</p>
-<button class="close-popup" onclick="closeWelcome()">Fermer</button>
-</div>
-</div>
+<!-- FOOTER -->
+<footer>
+<p>© 2026 Campus Rosa Parks</p>
+<p>Créateur : NyxX</p>
+</footer>
 
+<!-- LOGIN POPUP -->
 <div id="login-popup">
 <div class="popup-content">
 <span class="close-popup" onclick="closeLogin()">×</span>
@@ -266,83 +238,31 @@ nav .btn-discord:hover{background:var(--accent);color:white;transform:scale(1.05
 </div>
 </div>
 
-<!-- MAINTENANCE -->
-<div id="maintenance-overlay">
-<div class="emoji">🛠️</div>
-<h1>Maintenance active</h1>
-<p>Le site est temporairement indisponible.</p>
-<button onclick="deactivateMaintenance()">Connexion Admin</button>
-</div>
-
-<div class="theme-toggle" onclick="toggleTheme()">☀️</div>
-
 <script>
-// THEME TOGGLE
-function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';}
-
-// WELCOME POPUP
-window.onload=function(){document.getElementById('welcome-popup').style.display='flex';};
-function closeWelcome(){document.getElementById('welcome-popup').style.display='none';}
-
-// COUNTERS
-function animateCounter(el){let target=+el.dataset.target,current=0,step=target/60;let i=setInterval(()=>{current+=step;if(current>=target){el.innerText=target;clearInterval(i);}else el.innerText=Math.ceil(current);},20);}
+// ================= ANIMATIONS STATS =================
+function animateCounter(el){const target=+el.dataset.target;let cur=0;const step=target/60;const interval=setInterval(()=>{cur+=step;if(cur>=target){el.innerText=target;clearInterval(interval);}else{el.innerText=Math.ceil(cur);}},20);}
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('[data-target]').forEach(animateCounter);entry.target.classList.add('visible');}})},{threshold:0.5});
 document.querySelectorAll('.stat,.equipe-card').forEach(el=>observer.observe(el));
 
-// ADMIN LOGIN
-let adminConnected=false,maintenanceActive=false,newsList=JSON.parse(localStorage.getItem('newsList')||'[]');
-const newsGrid=document.getElementById('news-grid'),newsForm=document.getElementById('news-form'),noNewsMsg=document.getElementById('no-news-msg');
+// ================= NEWS =================
+let newsList=JSON.parse(localStorage.getItem('newsList')||'[]');
+const newsGrid=document.getElementById('news-grid');
+const newsForm=document.getElementById('news-form');
+const noNewsMsg=document.getElementById('no-news-msg');
+function renderNews(){newsGrid.innerHTML='';if(newsList.length===0){newsGrid.appendChild(noNewsMsg);}else{newsList.forEach((news,index)=>{const card=document.createElement('div');card.className='news-card visible';card.innerHTML=`${news.image?`<img src="${news.image}">`:''}<h3>${news.title}</h3><p>${news.desc}</p><p class="status ${news.status==='recent'?'green':'red'}">${news.status==='recent'?'⬆ Récemment ajouté':'⬇ Ancienne actualité'}</p>${adminConnected?`<button onclick="deleteNews(${index})">Supprimer</button>`:''}`;newsGrid.appendChild(card);});}localStorage.setItem('newsList',JSON.stringify(newsList));}
+function deleteNews(id){newsList.splice(id,1);renderNews();}
+newsForm.addEventListener('submit',e=>{e.preventDefault();const title=document.getElementById('news-title').value;const desc=document.getElementById('news-desc').value;const status=document.getElementById('news-status').value;const image=document.getElementById('news-image').value;newsList.unshift({title,desc,status,image,date:Date.now()});renderNews();newsForm.reset();});
+setInterval(()=>{const now=Date.now();newsList=newsList.filter(n=>now-n.date<48*60*60*1000);renderNews();},60000);
+
+// ================= ADMIN LOGIN =================
+let adminConnected=false;
 function showLogin(){document.getElementById('login-popup').style.display='flex';}
 function closeLogin(){document.getElementById('login-popup').style.display='none';}
-function loginAdmin(){
-  const u=document.getElementById('login-user').value,p=document.getElementById('login-pass').value;
-  if(u==='AdminRosaParks'&&p==='RosaparksAdminNJK'){
-    adminConnected=true;closeLogin();
-    document.querySelector('.btn-login').style.display='none';
-    document.querySelector('.btn-logout').style.display='inline-block';
-    newsForm.style.display='block';
-    document.getElementById('btn-maintenance').style.display='inline-block';
-    alert("Connexion réussie !");
-    renderNews();
-  }else alert("Identifiant ou mot de passe incorrect !");
-}
-function logout(){
-  adminConnected=false;
-  document.querySelector('.btn-login').style.display='inline-block';
-  document.querySelector('.btn-logout').style.display='none';
-  newsForm.style.display='none';
-  document.getElementById('btn-maintenance').style.display='none';
-  renderNews();
-}
+function loginAdmin(){const user=document.getElementById('login-user').value;const pass=document.getElementById('login-pass').value;if(user==='AdminRosaParks'&&pass==='RosaparksAdminNJK'){adminConnected=true;closeLogin();document.querySelector('.btn-login').style.display='none';document.querySelector('.btn-logout').style.display='inline-block';newsForm.style.display='block';renderNews();alert('Connexion réussie ✅');}else{alert('Identifiant ou mot de passe incorrect !');}}
+function logout(){adminConnected=false;document.querySelector('.btn-login').style.display='inline-block';document.querySelector('.btn-logout').style.display='none';newsForm.style.display='none';renderNews();}
 
-// NEWS
-function renderNews(){
-  newsGrid.innerHTML='';
-  if(newsList.length===0){newsGrid.appendChild(noNewsMsg);}
-  else newsList.forEach((n,i)=>{
-    const c=document.createElement('div');
-    c.className='news-card visible';
-    c.innerHTML=`${n.image?'<img src="'+n.image+'">':''}<h3>${n.title}</h3><p>${n.desc}</p><p class="status ${n.status==='recent'?'green':'red'}">${n.status==='recent'?'⬆ Récente':'⬇ Ancienne'}</p>${adminConnected?'<button onclick="deleteNews('+i+')">Supprimer</button>':''}`;
-    newsGrid.appendChild(c);
-  });
-  localStorage.setItem('newsList',JSON.stringify(newsList));
-}
-function deleteNews(i){newsList.splice(i,1);renderNews();}
-newsForm.addEventListener('submit',e=>{
-  e.preventDefault();
-  const t=document.getElementById('news-title').value,d=document.getElementById('news-desc').value,s=document.getElementById('news-status').value,img=document.getElementById('news-image').value;
-  newsList.unshift({title:t,desc:d,status:s,image:img,date:Date.now()});
-  renderNews();newsForm.reset();
-});
-setInterval(()=>{let now=Date.now();newsList=newsList.filter(n=>now-n.date<2*24*60*60*1000);renderNews();},60000);
-
-// MAINTENANCE
-const maintenanceOverlay=document.getElementById('maintenance-overlay');
-function toggleMaintenance(){maintenanceActive=true;maintenanceOverlay.style.display='flex';}
-function deactivateMaintenance(){showLogin();}
+// ================= INITIAL =================
 renderNews();
 </script>
 </body>
 </html>
-
-
