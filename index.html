@@ -3,183 +3,308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campus Rosa Parks</title>
-
+<title>Campus Rosa Parks - New Dysyan 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* Reset global */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Quicksand', sans-serif;
-  }
+/* ================= ROOT ================= */
+:root{
+  --bg:#0a1f3d; --panel:rgba(255,255,255,0.05); --panel-soft:rgba(255,255,255,0.08); 
+  --text:#e0f7ff; --muted:#a0cfff;
+  --primary:#00bfff; --accent:#80dfff; --border:rgba(255,255,255,.2); --shadow:0 20px 40px rgba(0,0,0,.5);
+  --green:#22c55e; --red:#ef4444; --yellow:#facc15;
+}
 
-  body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f8fafc;
-    overflow: hidden;
-    position: relative;
-  }
+/* ================= RESET ================= */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:.4s;}
+html{scroll-behavior:smooth;}
 
-  /* Fond animé avec formes dynamiques */
-  .bg-shape {
-    position: absolute;
-    width: 180%;
-    height: 180%;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #6366f1 20%, transparent 70%);
-    filter: blur(140px);
-    opacity: 0.35;
-    animation: drift1 15s ease-in-out infinite alternate;
-    z-index: 0;
-  }
+/* ================= NAV ================= */
+nav{
+  position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,0,0,0.3);backdrop-filter:blur(15px);border-radius:0 0 30px 30px;box-shadow:var(--shadow);z-index:1000;
+}
+nav strong{font-size:1.8rem;color:var(--primary);}
+nav .nav-links a{margin:0 15px;text-decoration:none;color:var(--text);font-weight:600;transition:.3s;}
+nav .nav-links a:hover{color:var(--accent);}
+nav .btn-login, nav .btn-logout{
+  padding:10px 22px;border-radius:15px;border:none;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:white;font-weight:700;cursor:pointer;transition:.3s;
+}
+nav .btn-login:hover, nav .btn-logout:hover{transform:scale(1.05);}
+nav .btn-discord{
+  padding:10px 22px;border-radius:15px;border:2px solid var(--accent);
+  background:none;color:var(--accent);font-weight:700;margin-left:15px;transition:.3s;
+}
+nav .btn-discord:hover{background:var(--accent);color:white;transform:scale(1.05);}
 
-  .bg-shape:nth-child(2) {
-    background: radial-gradient(circle at 70% 70%, #ec4899 25%, transparent 80%);
-    animation: drift2 18s ease-in-out infinite alternate;
-  }
+/* ================= HERO ================= */
+.hero{
+  min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:0 20px;
+  background:linear-gradient(135deg,#004080,#00bfff);
+  border-radius:0 0 60px 60px;box-shadow:var(--shadow);color:white;
+}
+.hero h1{font-size:clamp(2.5rem,6vw,4rem);margin-bottom:20px;}
+.hero h1 span{color:#80dfff;text-shadow:0 0 10px #00bfff;}
+.hero p{font-size:1.2rem;max-width:700px;margin-bottom:30px;line-height:1.8;font-weight:500;text-shadow:0 0 5px #00bfff;}
 
-  .bg-shape:nth-child(3) {
-    background: radial-gradient(circle at 50% 50%, #fcd34d 15%, transparent 85%);
-    animation: drift3 22s ease-in-out infinite alternate;
-  }
+/* ================= STATS ================= */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;margin:50px 10%;text-align:center;
+}
+.stat{
+  background:var(--panel-soft);border-radius:25px;padding:40px;
+  backdrop-filter:blur(15px);box-shadow:0 10px 30px rgba(0,0,0,.5);
+  transition:.5s;opacity:0;transform:translateY(30px) rotateX(0deg) rotateY(0deg);
+}
+.stat.visible{opacity:1;transform:translateY(0);}
+.stat:hover{transform:translateY(-10px) rotateX(5deg) rotateY(5deg) scale(1.05);}
+.stat h3{font-size:2.5rem;color:var(--primary);}
+.stat p{font-weight:700;color:var(--accent);margin-top:10px;}
 
-  @keyframes drift1 { from { transform: translate(-20%, -10%) scale(1); } to { transform: translate(0%, 10%) scale(1.1); } }
-  @keyframes drift2 { from { transform: translate(10%, -20%) scale(1); } to { transform: translate(-10%, 20%) scale(1.05); } }
-  @keyframes drift3 { from { transform: translate(-10%, 10%) scale(1); } to { transform: translate(10%, -10%) scale(1.08); } }
+/* ================= EQUIPE ================= */
+.equipe{
+  padding:80px 10%;text-align:center;
+}
+.equipe h2{
+  font-size:2.8rem;margin-bottom:50px;color:var(--primary);
+  text-shadow:0 0 10px #00bfff;
+}
+.equipe-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:30px;
+}
+.equipe-card{
+  background:var(--panel-soft);border-radius:25px;padding:30px;
+  backdrop-filter:blur(15px);box-shadow:0 10px 30px rgba(0,0,0,.5);
+  transition:.5s;opacity:0;transform:translateY(40px);
+}
+.equipe-card.visible{opacity:1;transform:translateY(0);}
+.equipe-card:hover{transform:scale(1.07) rotateX(3deg) rotateY(3deg);}
+.equipe-card h3{font-size:1.5rem;margin-bottom:15px;}
+.equipe-card p{font-weight:700;color:var(--accent);font-size:1.3rem;}
 
-  /* Container central */
-  .container {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    background: rgba(255,255,255,0.9);
-    padding: 60px 50px;
-    border-radius: 32px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-    backdrop-filter: blur(14px);
-    max-width: 600px;
-  }
+/* ================= ACTUALITES ================= */
+.actualites{padding:80px 10%;}
+.actualites h2{font-size:2.5rem;margin-bottom:40px;text-align:center;color:var(--primary);text-shadow:0 0 10px #00bfff;}
+.news-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;
+}
+.news-card{
+  background:var(--panel-soft);border-radius:25px;padding:25px;
+  backdrop-filter:blur(15px);box-shadow:0 10px 30px rgba(0,0,0,.5);
+  opacity:0;transform:translateY(20px);transition:.5s;position:relative;
+}
+.news-card.visible{opacity:1;transform:translateY(0);}
+.news-card:hover{transform:scale(1.05) rotateX(3deg) rotateY(3deg);}
+.news-card img{width:100%;border-radius:15px;margin-bottom:15px;object-fit:cover;height:150px;}
+.news-card h3{font-size:1.3rem;margin-bottom:8px;color:var(--primary);}
+.news-card p{font-size:0.95rem;color:var(--muted);margin-bottom:8px;}
+.news-card .status.green{color:var(--green);}
+.news-card .status.red{color:var(--red);}
+.news-card button{
+  position:absolute;top:10px;right:10px;background:var(--red);color:white;
+  border:none;border-radius:10px;padding:5px 12px;cursor:pointer;
+  transition:.3s;
+}
+.news-card button:hover{transform:scale(1.05);}
 
-  /* Tag version */
-  .version-tag {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 10px;
-  }
+/* ================= POPUPS ================= */
+#welcome-popup,#login-popup{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;
+  z-index:3000;display:none;
+}
+.popup-content{
+  background:var(--panel-soft);padding:35px;border-radius:30px;
+  max-width:400px;width:90%;text-align:center;box-shadow:0 0 30px rgba(0,0,255,.5);backdrop-filter:blur(15px);
+  animation:popupAnim 0.5s ease;
+}
+.popup-content .close-popup{position:absolute;top:10px;right:15px;font-size:22px;cursor:pointer;}
+.popup-content input, .popup-content button, .popup-content textarea, .popup-content select{
+  width:100%;padding:12px 15px;margin:8px 0;border-radius:12px;border:none;background:rgba(255,255,255,0.1);color:white;outline:none;
+}
+.popup-content button{
+  background:linear-gradient(135deg,#00bfff,#80dfff);
+  color:white;font-weight:700;cursor:pointer;transition:.3s;
+}
+.popup-content button:hover{transform:scale(1.05);}
+@keyframes popupAnim{0%{opacity:0;transform:scale(0.7);}100%{opacity:1;transform:scale(1);}}
 
-  h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    background: linear-gradient(120deg, #6366f1, #ec4899, #fcd34d);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradientText 4s ease infinite, glowText 2.5s ease-in-out infinite alternate;
-    margin-bottom: 20px;
-  }
+/* ================= MAINTENANCE ================= */
+#maintenance-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;display:none;
+  background:var(--bg);color:var(--text);align-items:center;justify-content:center;flex-direction:column;z-index:4000;
+}
+#maintenance-overlay .emoji{font-size:80px;margin-bottom:20px;animation:spin 2s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+#maintenance-overlay h1{color:var(--red);margin-bottom:15px;}
+#maintenance-overlay button{padding:12px 20px;border:none;border-radius:20px;background:linear-gradient(135deg,#00bfff,#80dfff);color:white;font-weight:700;cursor:pointer;transition:.3s;}
+#maintenance-overlay button:hover{transform:scale(1.05);}
 
-  @keyframes gradientText {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  @keyframes glowText {
-    0% { text-shadow: 0 0 15px #8b5cf6, 0 0 30px #f43f5e, 0 0 45px #fcd34d; }
-    100% { text-shadow: 0 0 30px #6366f1, 0 0 60px #ec4899, 0 0 90px #fcd34d; }
-  }
-
-  p {
-    font-size: 1.2rem;
-    color: #4b5563;
-    line-height: 1.6;
-    margin-top: 12px;
-  }
-
-  .feature-list {
-    margin-top: 28px;
-    text-align: left;
-    font-size: 1rem;
-    color: #374151;
-  }
-
-  .feature-list li {
-    margin: 10px 0;
-    padding-left: 20px;
-    position: relative;
-    font-weight: 500;
-  }
-
-  .feature-list li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 10px;
-    height: 10px;
-    background: linear-gradient(45deg, #6366f1, #ec4899, #fcd34d);
-    border-radius: 50%;
-    animation: pulse 2s infinite alternate;
-  }
-
-  @keyframes pulse {
-    from { transform: scale(1); opacity: 0.8; }
-    to { transform: scale(1.5); opacity: 0.5; }
-  }
-
-  /* Ligne accent moderne */
-  .accent-line {
-    width: 90px;
-    height: 5px;
-    margin: 28px auto;
-    border-radius: 6px;
-    background: linear-gradient(90deg, #6366f1, #ec4899, #fcd34d);
-    animation: lineGlow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes lineGlow {
-    0% { filter: brightness(1); }
-    100% { filter: brightness(1.6); }
-  }
-
-  /* Responsive */
-  @media (max-width: 480px) {
-    h1 { font-size: 2.6rem; }
-    p { font-size: 1rem; }
-    .container { padding: 40px 30px; }
-  }
+/* ================= THEME TOGGLE ================= */
+.theme-toggle{
+  position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;
+  background:var(--panel-soft);display:flex;justify-content:center;align-items:center;font-size:24px;cursor:pointer;box-shadow:0 0 30px #00bfff;
+}
 </style>
 </head>
-
 <body>
 
-  <!-- Background shapes -->
-  <div class="bg-shape"></div>
-  <div class="bg-shape"></div>
-  <div class="bg-shape"></div>
+<!-- HERO -->
+<section class="hero">
+<h1>Campus <span>Rosa Parks</span></h1>
+<p>Bienvenue sur la nouvelle version <b>New Dysyan</b> ! Profitez du site refait intégralement.</p>
+</section>
 
-  <!-- Container principal -->
-  <div class="container">
-    <div class="version-tag">Version 2.0.0 — New Modern</div>
-    <h1>Maintenance en cours</h1>
+<!-- NAV -->
+<nav>
+<strong>Campus Rosa Parks</strong>
+<div class="nav-links">
+<a href="#stats">Stats</a>
+<a href="#equipe">Équipe</a>
+<a href="#actualites">Actualités</a>
+</div>
+<div>
+<div class="btn-login" onclick="showLogin()">Se connecter</div>
+<div class="btn-logout" onclick="logout()" style="display:none;">Déconnexion</div>
+<a href="https://discord.gg/X9KRZesCuX" target="_blank" class="btn-discord">Discord</a>
+</div>
+</nav>
 
-    <div class="accent-line"></div>
+<!-- STATS -->
+<section id="stats" class="stats">
+<div class="stat"><h3 data-target="2">0</h3><p>Services</p></div>
+<div class="stat"><h3 data-target="230">0</h3><p>Membres</p></div>
+<div class="stat"><h3 data-target="100">0</h3><p>% Immersion</p></div>
+</section>
 
-    <p>Notre site passe à la V2.0.0 ! Profitez bientôt d'une interface plus rapide, fluide et encore plus moderne.</p>
+<!-- EQUIPE -->
+<section class="equipe" id="equipe">
+<h2>Notre Équipe</h2>
+<div class="equipe-grid">
+<div class="equipe-card"><h3>Administration</h3><p data-target="4">0</p></div>
+<div class="equipe-card"><h3>Vie scolaire</h3><p data-target="6">0</p></div>
+<div class="equipe-card"><h3>Professeurs</h3><p data-target="24">0</p></div>
+<div class="equipe-card"><h3>Élèves RP</h3><p data-target="15">0</p></div>
+</div>
+</section>
 
-    <ul class="feature-list">
-      <li>Interface ultra-moderne & responsive</li>
-      <li>Animations dynamiques et subtiles</li>
-      <li>Optimisation des performances et du design</li>
-      <li>Nouvelles fonctionnalités premium</li>
-    </ul>
-  </div>
+<!-- ACTUALITES -->
+<section class="actualites" id="actualites">
+<h2>Actualités</h2>
+<div class="news-grid" id="news-grid">
+<p id="no-news-msg" style="text-align:center;color:var(--muted);font-weight:600;">Aucune actualité pour le moment</p>
+</div>
+<form id="news-form" style="display:none;">
+<h3>Ajouter une actualité</h3>
+<input type="text" id="news-title" placeholder="Titre" required>
+<textarea id="news-desc" rows="4" placeholder="Description" required></textarea>
+<select id="news-status" required>
+<option value="recent">Récente</option>
+<option value="old">Ancienne</option>
+</select>
+<input type="text" id="news-image" placeholder="URL image">
+<button type="submit">Ajouter</button>
+</form>
+<button id="btn-maintenance" onclick="toggleMaintenance()" style="display:none;margin-top:20px;">Activer Maintenance</button>
+</section>
 
+<!-- POPUPS -->
+<div id="welcome-popup">
+<div class="popup-content">
+<h3>🎉 Bienvenue sur la nouvelle version <b>New Dysyan</b> !</h3>
+<p>Profitez d’un site totalement refait et moderne.</p>
+<button class="close-popup" onclick="closeWelcome()">Fermer</button>
+</div>
+</div>
+
+<div id="login-popup">
+<div class="popup-content">
+<span class="close-popup" onclick="closeLogin()">×</span>
+<h3>Connexion Admin</h3>
+<input type="text" id="login-user" placeholder="Identifiant">
+<input type="password" id="login-pass" placeholder="Mot de passe">
+<button onclick="loginAdmin()">Se connecter</button>
+</div>
+</div>
+
+<!-- MAINTENANCE -->
+<div id="maintenance-overlay">
+<div class="emoji">🛠️</div>
+<h1>Maintenance active</h1>
+<p>Le site est temporairement indisponible.</p>
+<button onclick="deactivateMaintenance()">Connexion Admin</button>
+</div>
+
+<div class="theme-toggle" onclick="toggleTheme()">☀️</div>
+
+<script>
+// THEME TOGGLE
+function toggleTheme(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';}
+
+// WELCOME POPUP
+window.onload=function(){document.getElementById('welcome-popup').style.display='flex';};
+function closeWelcome(){document.getElementById('welcome-popup').style.display='none';}
+
+// COUNTERS
+function animateCounter(el){let target=+el.dataset.target,current=0,step=target/60;let i=setInterval(()=>{current+=step;if(current>=target){el.innerText=target;clearInterval(i);}else el.innerText=Math.ceil(current);},20);}
+const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.querySelectorAll('[data-target]').forEach(animateCounter);entry.target.classList.add('visible');}})},{threshold:0.5});
+document.querySelectorAll('.stat,.equipe-card').forEach(el=>observer.observe(el));
+
+// ADMIN LOGIN
+let adminConnected=false,maintenanceActive=false,newsList=JSON.parse(localStorage.getItem('newsList')||'[]');
+const newsGrid=document.getElementById('news-grid'),newsForm=document.getElementById('news-form'),noNewsMsg=document.getElementById('no-news-msg');
+function showLogin(){document.getElementById('login-popup').style.display='flex';}
+function closeLogin(){document.getElementById('login-popup').style.display='none';}
+function loginAdmin(){
+  const u=document.getElementById('login-user').value,p=document.getElementById('login-pass').value;
+  if(u==='AdminRosaParks'&&p==='RosaparksAdminNJK'){
+    adminConnected=true;closeLogin();
+    document.querySelector('.btn-login').style.display='none';
+    document.querySelector('.btn-logout').style.display='inline-block';
+    newsForm.style.display='block';
+    document.getElementById('btn-maintenance').style.display='inline-block';
+    alert("Connexion réussie !");
+    renderNews();
+  }else alert("Identifiant ou mot de passe incorrect !");
+}
+function logout(){
+  adminConnected=false;
+  document.querySelector('.btn-login').style.display='inline-block';
+  document.querySelector('.btn-logout').style.display='none';
+  newsForm.style.display='none';
+  document.getElementById('btn-maintenance').style.display='none';
+  renderNews();
+}
+
+// NEWS
+function renderNews(){
+  newsGrid.innerHTML='';
+  if(newsList.length===0){newsGrid.appendChild(noNewsMsg);}
+  else newsList.forEach((n,i)=>{
+    const c=document.createElement('div');
+    c.className='news-card visible';
+    c.innerHTML=`${n.image?'<img src="'+n.image+'">':''}<h3>${n.title}</h3><p>${n.desc}</p><p class="status ${n.status==='recent'?'green':'red'}">${n.status==='recent'?'⬆ Récente':'⬇ Ancienne'}</p>${adminConnected?'<button onclick="deleteNews('+i+')">Supprimer</button>':''}`;
+    newsGrid.appendChild(c);
+  });
+  localStorage.setItem('newsList',JSON.stringify(newsList));
+}
+function deleteNews(i){newsList.splice(i,1);renderNews();}
+newsForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const t=document.getElementById('news-title').value,d=document.getElementById('news-desc').value,s=document.getElementById('news-status').value,img=document.getElementById('news-image').value;
+  newsList.unshift({title:t,desc:d,status:s,image:img,date:Date.now()});
+  renderNews();newsForm.reset();
+});
+setInterval(()=>{let now=Date.now();newsList=newsList.filter(n=>now-n.date<2*24*60*60*1000);renderNews();},60000);
+
+// MAINTENANCE
+const maintenanceOverlay=document.getElementById('maintenance-overlay');
+function toggleMaintenance(){maintenanceActive=true;maintenanceOverlay.style.display='flex';}
+function deactivateMaintenance(){showLogin();}
+renderNews();
+</script>
 </body>
+</html>
