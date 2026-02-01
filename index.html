@@ -7,36 +7,30 @@
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
---bg:linear-gradient(120deg,#ffe4e1,#ffd6d1,#ffe0e6);
---panel:rgba(255,255,255,.9);
---text:#3b0a0a;
---primary:#ff7f7f;
---accent:#ffa07a;
+--bg:#ffffff;
+--panel:rgba(255,255,255,0.95);
+--text:#FF7F7F;
+--primary:#FF7F7F;
+--accent:#FFA07A;
 --radius:32px;
---shadow:0 30px 80px rgba(0,0,0,.15);
+--shadow:0 20px 50px rgba(0,0,0,.1);
 transition:.4s;
 }
 [data-theme="dark"]{
---bg:linear-gradient(120deg,#2a0a0a,#3b0a0a,#2a0a0a);
---panel:rgba(20,10,10,.95);
---text:#ffd6d1;
---primary:#ff7f7f;
---accent:#ffa07a;
---shadow:0 30px 80px rgba(0,0,0,.5);
+--bg:#0f0f0f;
+--panel:rgba(20,20,20,0.95);
+--text:#FFB6B6;
+--primary:#FF7F7F;
+--accent:#FFA07A;
+--shadow:0 20px 50px rgba(0,0,0,.7);
 }
 *{box-sizing:border-box;}
 body{
 margin:0;
 font-family:'Quicksand',sans-serif;
 background:var(--bg);
-background-size:500% 500%;
-animation:bgflow 25s ease infinite;
 color:var(--text);
-}
-@keyframes bgflow{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+scroll-behavior:smooth;
 }
 nav{
 position:fixed;
@@ -50,11 +44,12 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 background:var(--panel);
-backdrop-filter:blur(18px);
 border-radius:var(--radius);
 box-shadow:var(--shadow);
 z-index:999;
+transition:top .3s, background .4s;
 }
+nav.hidden{top:-120px;}
 nav strong{font-size:1.7rem;}
 .nav-links a{
 margin:0 12px;
@@ -62,8 +57,9 @@ text-decoration:none;
 font-weight:700;
 color:var(--text);
 transition:.3s;
+cursor:pointer;
 }
-.nav-links a:hover{color:var(--primary);}
+.nav-links a:hover{color:var(--accent);}
 .nav-btn{
 padding:12px 26px;
 border-radius:20px;
@@ -85,10 +81,8 @@ text-align:center;
 padding:40px;
 }
 .hero h1{
-font-size:4.2rem;
-background:linear-gradient(135deg,var(--primary),var(--accent));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+font-size:4rem;
+color:var(--primary);
 }
 .hero p{
 max-width:720px;
@@ -118,9 +112,7 @@ h2{
 text-align:center;
 font-size:2.7rem;
 margin-bottom:45px;
-background:linear-gradient(135deg,var(--primary),var(--accent));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+color:var(--primary);
 }
 
 /* STATS */
@@ -133,7 +125,7 @@ gap:35px;
 padding:45px;
 border-radius:var(--radius);
 text-align:center;
-background:linear-gradient(135deg,#ffd6d1,#ffe4e1);
+background:linear-gradient(135deg,#FFD6D1,#FFE4E1);
 color:var(--text);
 }
 .stat h3{font-size:3.2rem;}
@@ -148,7 +140,7 @@ gap:30px;
 padding:40px;
 text-align:center;
 border-radius:var(--radius);
-background:linear-gradient(135deg,#ffe4e1,#ffd6d1);
+background:linear-gradient(135deg,#FFE4E1,#FFD6D1);
 color:var(--text);
 }
 
@@ -178,11 +170,23 @@ padding:15px 34px;
 border-radius:26px;
 background:linear-gradient(135deg,var(--primary),var(--accent));
 color:#fff;
-font-weight:800;
+font-weight:700;
 text-decoration:none;
 transition:.3s;
 }
 .btn-main:hover{transform:scale(1.05);}
+
+/* INFO */
+.info{
+max-width:800px;
+margin:40px auto;
+padding:25px 35px;
+border-radius:var(--radius);
+background:linear-gradient(135deg,#FFD6D1,#FFE4E1);
+text-align:center;
+color:var(--text);
+font-weight:600;
+}
 
 /* FOOTER */
 footer{
@@ -194,7 +198,8 @@ transition:.4s;
 </style>
 </head>
 <body>
-<nav>
+
+<nav id="main-nav">
 <strong>Campus Rosa Parks</strong>
 <div class="nav-links">
 <a href="#apropos">À propos</a>
@@ -202,7 +207,7 @@ transition:.4s;
 <a href="#equipe">Équipe</a>
 <a href="#services">Services</a>
 <a href="#mail">Mail</a>
-<a href="#actualites">Actus</a>
+<a href="#actualites">Actualités</a>
 <a href="#contact">Contact</a>
 </div>
 <button class="nav-btn" onclick="toggleTheme()">🌙 Mode sombre</button>
@@ -210,15 +215,19 @@ transition:.4s;
 
 <div class="hero">
 <h1>Campus Rosa Parks</h1>
-<p>Une expérience immersive RP scolaire moderne, réaliste et vivante.</p>
+<p>Une expérience immersive RP scolaire moderne et vivante.</p>
 </div>
+
+<section class="info">
+📢 Information : Bienvenue sur notre site officiel du Campus Rosa Parks !
+</section>
 
 <section id="apropos">
 <h2>Qui sommes-nous</h2>
-<p>Le Campus Rosa Parks est un projet RP scolaire immersif qui reproduit la vie d’un établissement moderne avec réalisme et interactions.</p>
+<p>Le Campus Rosa Parks est un projet RP scolaire immersif reproduisant la vie d’un établissement moderne.</p>
 <p><strong>Rosa Parks</strong> était une militante pour les droits civiques. En 1955, elle refusa de céder sa place dans un bus, devenant un symbole mondial de résistance pacifique.</p>
-<p>Notre campus porte son nom pour rappeler l’importance du respect, de l’égalité et du courage, même dans le roleplay.</p>
 </section>
+
 
 <section id="stats">
 <h2>Stats</h2>
@@ -262,9 +271,6 @@ transition:.4s;
 Pour nous contacter, envoyez un mail à : 
 <a href="mailto:ce.0227235a@campus-rosaparks.fr" style="color:var(--accent);font-weight:700;">ce.0227235a@campus-rosaparks.fr</a>
 </p>
-<p style="text-align:center;color:var(--text);opacity:0.8;">
-Nous vous répondrons dans les meilleurs délais.
-</p>
 </section>
 
 <footer>
@@ -273,12 +279,23 @@ Nous vous répondrons dans les meilleurs délais.
 </footer>
 
 <script>
+// Theme toggle
 function toggleTheme(){
 const html=document.documentElement;
 html.setAttribute('data-theme', html.getAttribute('data-theme')==='light'?'dark':'light');
 }
 
-/* Scroll animation */
+// Navbar hide/show on scroll
+let lastScroll=0;
+const nav=document.getElementById('main-nav');
+window.addEventListener('scroll',()=>{
+let st=window.pageYOffset||document.documentElement.scrollTop;
+if(st>lastScroll) nav.classList.add('hidden');
+else nav.classList.remove('hidden');
+lastScroll=st<=0?0:st;
+});
+
+// Scroll animations
 const sections=document.querySelectorAll('section');
 const observer=new IntersectionObserver(entries=>{
 entries.forEach(e=>{
@@ -287,7 +304,7 @@ if(e.isIntersecting)e.target.classList.add('show');
 },{threshold:.2});
 sections.forEach(s=>observer.observe(s));
 
-/* Counter */
+// Counter animation
 const counters=document.querySelectorAll('[data-target]');
 const obs2=new IntersectionObserver(entries=>{
 entries.forEach(e=>{
@@ -307,7 +324,7 @@ obs2.unobserve(el);
 },{threshold:.6});
 counters.forEach(c=>obs2.observe(c));
 
-/* News */
+// News
 const news=[
 {title:'🔔 Fin de la maintenance sur Pronote 🔔',desc:'🖥️ Pronote est à nouveau entièrement accessible.',image:'https://cdn.discordapp.com/attachments/1464632425908015206/1467204656756428943/Bannieres_-_CRP_2.png'},
 {title:'📧 Lancement de notre nouvelle plateforme SOGo',desc:'🚀 La plateforme mail SOGo est disponible.',image:'https://cdn.discordapp.com/attachments/1464632425908015206/1467202736561979473/Bannieres_-_CRP_1.png'}
