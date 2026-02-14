@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Rosa Parks | Excellence Immursive</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           1. SYSTÈME DE DESIGN (QUICKSAND ONLY)
+           ========================================= */
+        :root {
+            --p: #ff2e63;
+            --s: #08d9d6;
+            --a: #ffde7d;
+            --bg: #fdfdfe;
+            --card: #ffffff;
+            --txt: #1e272e;
+            --txt-s: #576574;
+            --glass: rgba(255, 255, 255, 0.8);
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --curve: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0b0c10;
+            --card: #15171e;
+            --txt: #f5f6fa;
+            --txt-s: #a4b0be;
+            --glass: rgba(21, 23, 30, 0.8);
+            --shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        /* =========================================
+           2. LOADER D'ENTRÉE
+           ========================================= */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s var(--curve), visibility 1s;
+        }
+
+        .loader-icon {
+            font-size: 3rem;
+            color: var(--p);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* =========================================
+           3. BASE & SCROLL
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg);
+            color: var(--txt);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Particles Layer */
+        #particles-js {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* =========================================
+           4. NAVIGATION ÉLÉGANTE (HIDE/SHOW)
+           ========================================= */
+        .header-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1100px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 12px 35px;
+            border-radius: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: transform 0.6s var(--curve), opacity 0.4s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav--hidden { transform: translate(-50%, -150%); opacity: 0; }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--p);
+        }
+
+        .nav-menu { display: flex; list-style: none; gap: 20px; }
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--txt);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 15px;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+        .nav-menu a:hover { background: rgba(255, 46, 99, 0.1); color: var(--p); }
+
+        .theme-toggle {
+            cursor: pointer;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card);
+            color: var(--p);
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+        }
+
+        /* =========================================
+           5. HERO SECTION (FINESSE)
+           ========================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 60px;
+        }
+
+        .hero-tag {
+            background: rgba(255, 46, 99, 0.1);
+            color: var(--p);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--p), var(--s));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--txt-s);
+            max-width: 650px;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .btn-grp { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.4s var(--curve);
+            border: none;
+        }
+
+        .btn-p { background: var(--p); color: #fff; box-shadow: 0 10px 20px rgba(255, 46, 99, 0.2); }
+        .btn-p:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 46, 99, 0.3); }
+
+        .btn-d { background: #5865F2; color: #fff; }
+        .btn-d:hover { transform: translateY(-3px); opacity: 0.9; }
+
+        /* =========================================
+           6. SECTIONS & BENTO
+           ========================================= */
+        section { padding: 100px 5% 50px; max-width: 1200px; margin: 0 auto; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s var(--curve); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .sec-head { text-align: center; margin-bottom: 60px; }
+        .sec-head h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
+        .sec-head .line { width: 50px; height: 4px; background: var(--p); margin: 0 auto; border-radius: 10px; }
+
+        /* Stats Grid */
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card-stat {
+            background: var(--card);
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .card-stat i { font-size: 2rem; color: var(--p); margin-bottom: 20px; }
+        
+        /* Chiffres Doux */
+        .count-val {
+            font-size: 3rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 5px;
+            transition: 0.5s filter;
+        }
+        .is-counting { filter: blur(1px); }
+
+        .card-stat label { font-weight: 700; color: var(--txt-s); font-size: 0.85rem; text-transform: uppercase; }
+
+        /* =========================================
+           7. ÉQUIPE & SERVICES
+           ========================================= */
+        .team-wrap {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .team-mini {
+            background: var(--card);
+            padding: 30px 15px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .team-mini span { font-size: 2rem; font-weight: 800; color: var(--p); display: block; }
+        .team-mini label { font-size: 0.9rem; font-weight: 600; color: var(--txt-s); }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .s-card {
+            background: var(--card);
+            padding: 35px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .s-card h3 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        .s-ip { background: var(--bg); padding: 8px 12px; border-radius: 10px; font-family: monospace; font-size: 0.8rem; color: var(--txt-s); }
+        
+        .s-link {
+            margin-top: auto;
+            background: var(--txt);
+            color: #fff;
+            padding: 12px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        /* MAINTENANCE ZONE */
+        .maint-box {
+            grid-column: span 3;
+            background: rgba(255, 222, 125, 0.1);
+            border: 2px dashed var(--a);
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .maint-box i { font-size: 2rem; color: var(--a); margin-bottom: 10px; }
+
+        /* =========================================
+           8. ACTUALITÉS
+           ========================================= */
+        .news-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .n-item {
+            background: var(--card);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .n-img { width: 100%; height: 220px; object-fit: cover; }
+        .n-info { padding: 30px; }
+        .n-info h3 { margin-bottom: 10px; font-size: 1.4rem; }
+        .n-btn { color: var(--p); font-weight: 800; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        /* =========================================
+           9. FOOTER & CONTACT
+           ========================================= */
+        .cta {
+            background: linear-gradient(135deg, var(--p), #fb4e7a);
+            padding: 80px 40px;
+            border-radius: 40px;
+            text-align: center;
+            color: #fff;
+            margin: 80px 20px;
+        }
+
+        .cta h2 { font-size: 2.5rem; margin-bottom: 15px; }
+        .btn-white { background: #fff; color: var(--p); margin-top: 20px; }
+
+        footer { text-align: center; padding: 60px 20px; opacity: 0.7; font-size: 0.9rem; }
+
+        /* =========================================
+           10. MODALS (POPUPS)
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--card);
+            width: 100%;
+            max-width: 700px;
+            padding: 40px;
+            border-radius: 35px;
+            position: relative;
+            animation: zoom 0.4s var(--curve);
+        }
+
+        @keyframes zoom { from { transform: scale(0.9); opacity: 0; } }
+        .close { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: var(--p); }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 900px) {
+            .grid-stats, .services-grid, .team-wrap { grid-template-columns: 1fr; }
+            .maint-box { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body onload="siteInit()">
+
+    <div id="loader">
+        <i class="fa-solid fa-graduation-cap loader-icon"></i>
+        <h2 style="margin-top:15px; font-weight:700;">Campus Rosa Parks</h2>
+    </div>
+
+    <div id="particles-js"></div>
+
+    <nav class="header-nav" id="mainNav">
+        <div class="logo">
+            <i class="fa-solid fa-building-columns"></i>
+            Campus Rosa Parks
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#stats">Campus</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#news">Actus</a></li>
+        </ul>
+        <button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+    </nav>
+
+    <header class="hero" id="accueil">
+        <div class="hero-tag reveal">Établissement Scolaire RP</div>
+        <h1 class="reveal">L'avenir se construit au<br><span>Campus Rosa Parks</span></h1>
+        <p class="reveal">Une immersion pédagogique et communautaire unique. Découvrez un environnement conçu pour l'excellence et le partage.</p>
+        <div class="btn-grp reveal">
+            <a href="#services" class="btn btn-p"><i class="fa-solid fa-compass"></i> Explorer</a>
+            <a href="https://discord.gg/rosaparks" target="_blank" class="btn btn-d"><i class="fa-brands fa-discord"></i> Discord Officiel</a>
+        </div>
+    </header>
+
+    <section id="stats" class="reveal">
+        <div class="sec-head">
+            <h2>L'impact en <span>chiffres</span></h2>
+            <div class="line"></div>
+        </div>
+        <div class="grid-stats">
+            <div class="card-stat">
+                <i class="fa-solid fa-server"></i>
+                <span class="count-val" data-val="3">0</span>
+                <label>Outils Actifs</label>
+            </div>
+            <div class="card-stat">
+                <i class="fa-solid fa-users-viewfinder"></i>
+                <span class="count-val" data-val="253">0</span>
+                <label>Membres Inscrits</label>
+            </div>
+            <div class="card-stat">
+                <i class="fa-solid fa-award"></i>
+                <span class="count-val" data-val="100">0</span>
+                <label>% Qualité RP</label>
+            </div>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <div class="sec-head">
+            <h2>Notre <span>Personnel</span></h2>
+        </div>
+        <div class="team-wrap">
+            <div class="team-mini">
+                <span class="count-val" data-val="5">0</span>
+                <label>Admin</label>
+            </div>
+            <div class="team-mini">
+                <span class="count-val" data-val="6">0</span>
+                <label>Vie Scolaire</label>
+            </div>
+            <div class="team-mini">
+                <span class="count-val" data-val="32">0</span>
+                <label>Professeurs</label>
+            </div>
+            <div class="team-mini">
+                <span class="count-val" data-val="13">0</span>
+                <label>Élèves RP</label>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="reveal">
+        <div class="sec-head">
+            <h2>Services <span>Numériques</span></h2>
+        </div>
+        <div class="services-grid">
+            <div class="s-card">
+                <h3><i class="fa-solid fa-leaf" style="color:#2ecc71"></i> Pronote</h3>
+                <p>Gestion des notes, absences et emplois du temps.</p>
+                <div class="s-ip">13.60.37.11:49300</div>
+                <a href="https://pronote.campus-rosaparks.fr/" target="_blank" class="s-link">Ouvrir Pronote</a>
+            </div>
+            <div class="s-card">
+                <h3><i class="fa-solid fa-envelope" style="color:#3498db"></i> Webmail</h3>
+                <p>Messagerie privée pour le personnel du campus.</p>
+                <div class="s-ip">Authentification Google</div>
+                <a href="https://accounts.google.com/" target="_blank" class="s-link" style="background:#3498db">Se connecter</a>
+            </div>
+            <div class="s-card">
+                <h3><i class="fa-solid fa-link" style="color:var(--a)"></i> Park'Connect</h3>
+                <p>Portail de liaison de compte et services campus.</p>
+                <div class="s-ip">Version 1.2.5</div>
+                <button onclick="openMaint()" class="s-link" style="background:var(--a); color:black; border:none; cursor:pointer">Lancer</button>
+            </div>
+            <div class="maint-box reveal">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p><strong>Avis :</strong> Le service Park'Connect est actuellement en maintenance pour mise à jour de sécurité.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="news" class="reveal">
+        <div class="sec-head">
+            <h2>Dernières <span>Actus</span></h2>
+        </div>
+        <div class="news-wrap" id="newsGrid">
+            </div>
+    </section>
+
+    <div class="cta reveal">
+        <h2>Une question ?</h2>
+        <p>Le secrétariat vous répond par e-mail sous 24h.</p>
+        <a href="mailto:ce.0227235a@campus-rosaparks.fr" class="btn btn-white">ce.0227235a@campus-rosaparks.fr</a>
+    </div>
+
+    <footer>
+        <p>© 2026 Campus Rosa Parks • Excellence & Discipline</p>
+        <p style="margin-top:10px; opacity:0.5">Architecture Web par NyxX</p>
+    </footer>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // --- 1. INITIALISATION ---
+        function siteInit() {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.visibility = 'hidden', 1000);
+            }, 1500);
+            
+            initNews();
+            scrollReveal();
+            initParticles();
+        }
+
+        // --- 2. PARTICLES ---
+        function initParticles() {
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 60 },
+                    "color": { "value": "#ff2e63" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.2 },
+                    "size": { "value": 3 },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ff2e63", "opacity": 0.1, "width": 1 },
+                    "move": { "enable": true, "speed": 1.5 }
+                }
+            });
+        }
+
+        // --- 3. NEWS DATA ---
+        const news = [
+            {
+                title: "Partenariat Orion Host",
+                short: "Notre campus rejoint Orion Host pour plus de performances...",
+                full: "🚀 Une grande étape ! Notre campus rejoint officiellement Orion Host pour améliorer nos services, renforcer nos performances et offrir de nouvelles opportunités. 🎓🔥",
+                img: "https://cdn.discordapp.com/attachments/1430479370107093113/1467506596253929637/image.png?ex=6980a185&is=697f5005&hm=99009fe0968b9da9d5b3f1a2c669a574fb29039283515d5ed054a1233feff0dd"
+            },
+            {
+                title: "Google Workspace",
+                short: "Le cloud collaboratif est maintenant disponible pour tous...",
+                full: "Nous sommes heureux de vous annoncer l’arrivée d’un nouveau service Google Workspace 📊 pour une meilleure gestion des e-mails et un travail collaboratif efficace 💙✨.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Google_Workspace_Logo.svg/langfr-3840px-Google_Workspace_Logo.svg.png"
+            }
+        ];
+
+        function initNews() {
+            const grid = document.getElementById('newsGrid');
+            news.forEach((n, i) => {
+                grid.innerHTML += `
+                    <div class="n-item reveal">
+                        <img src="${n.img}" class="n-img">
+                        <div class="n-info">
+                            <h3>${n.title}</h3>
+                            <p style="color:var(--txt-s); margin-bottom:15px; font-size:0.9rem;">${n.short}</p>
+                            <span class="n-btn" onclick="openNews(${i})">LIRE LA SUITE <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- 4. NAVIGATION AUTO-HIDE ---
+        let prevScroll = window.pageYOffset;
+        window.onscroll = function() {
+            let currentScroll = window.pageYOffset;
+            const nav = document.getElementById("mainNav");
+            
+            if (prevScroll > currentScroll) {
+                nav.classList.remove("nav--hidden");
+            } else {
+                if(currentScroll > 100) nav.classList.add("nav--hidden");
+            }
+            prevScroll = currentScroll;
+            scrollReveal();
+        };
+
+        // --- 5. COMPTEURS ET REVEAL ---
+        function scrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 50 && revealTop > -el.offsetHeight) {
+                    el.classList.add('active');
+                    if(el.querySelector('[data-val]')) animateNumbers(el);
+                } else {
+                    el.classList.remove('active');
+                    // Reset des nombres pour rejouer
+                    el.querySelectorAll('[data-val]').forEach(n => n.innerText = "0");
+                }
+            });
+        }
+
+        function animateNumbers(parent) {
+            const nums = parent.querySelectorAll('[data-val]');
+            nums.forEach(n => {
+                const target = +n.getAttribute('data-val');
+                const current = +n.innerText;
+                if(current === 0) {
+                    n.classList.add('is-counting');
+                    let count = 0;
+                    const duration = 2500; // 2.5 secondes
+                    const step = target / (duration / 30);
+                    const update = () => {
+                        count += step;
+                        if(count < target) {
+                            n.innerText = Math.ceil(count);
+                            setTimeout(update, 30);
+                        } else {
+                            n.innerText = target;
+                            n.classList.remove('is-counting');
+                        }
+                    };
+                    update();
+                }
+            });
+        }
+
+        // --- 6. MODALS ---
+        function openNews(idx) {
+            const n = news[idx];
+            document.getElementById('modalContent').innerHTML = `
+                <img src="${n.img}" style="width:100%; border-radius:20px; margin-bottom:20px;">
+                <h2 style="margin-bottom:15px;">${n.title}</h2>
+                <p style="color:var(--txt-s); font-size:1.1rem; line-height:1.7;">${n.full}</p>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openMaint() {
+            document.getElementById('modalContent').innerHTML = `
+                <div style="text-align:center; padding:20px;">
+                    <i class="fa-solid fa-screwdriver-wrench" style="font-size:4rem; color:var(--a); margin-bottom:20px;"></i>
+                    <h2>Maintenance Technique</h2>
+                    <p style="color:var(--txt-s); margin-top:10px;">Le service Park'Connect est en cours de déploiement. Merci de réessayer plus tard.</p>
+                </div>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleTheme() {
+            const h = document.documentElement;
+            const isDark = h.getAttribute('data-theme') === 'dark';
+            h.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.querySelector('.theme-toggle i').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+        }
+    </script>
+</body>
+</html>
