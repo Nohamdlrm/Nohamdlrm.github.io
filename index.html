@@ -1,666 +1,675 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="light">
+<html lang="fr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Rosa Parks | Excellence Immersive</title>
+    <title>Campus Rosa Parks | L'Excellence Connectée</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* =========================================
-           1. SYSTÈME DE DESIGN (QUICKSAND STYLE)
+           1. VARIABLES & SYSTÈME DE DESIGN (SAUMON)
            ========================================= */
         :root {
-            --p: #6c5ce7; /* Nouveau Violet doux */
-            --s: #00cec9; /* Turquoise */
-            --a: #fab1a0; /* Pêche doux */
-            --bg: #f0f3f7;
-            --card: #ffffff;
-            --txt: #2d3436;
-            --txt-s: #636e72;
-            --glass: rgba(255, 255, 255, 0.85);
-            --shadow: 0 20px 40px rgba(0,0,0,0.06);
-            --curve: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Effet rebond Quicksand */
+            --primary: #FF8F7F; /* Saumon Principal */
+            --primary-glow: rgba(255, 143, 127, 0.3);
+            --secondary: #FFB5A7; /* Saumon Clair */
+            --accent: #FF6B6B; /* Saumon Foncé */
+            --bg-dark: #0f172a; /* Fond Sombre Profond */
+            --bg-card: rgba(30, 41, 59, 0.7); /* Cartes semi-transparentes */
+            --text-main: #f8fafc; /* Texte Principal Clair */
+            --text-dim: #94a3b8; /* Texte Secondaire Estompé */
+            --glass-border: rgba(255, 143, 127, 0.15); /* Bordure Saumon très fine */
+            --nav-bg: rgba(15, 23, 42, 0.85); /* Fond Navbar */
+            --font-main: 'Quicksand', sans-serif;
         }
 
-        [data-theme="dark"] {
-            --bg: #1a1b21;
-            --card: #25262d;
-            --txt: #f5f6fa;
-            --txt-s: #b2bec3;
-            --glass: rgba(37, 38, 45, 0.85);
-            --shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        /* =========================================
-           2. LOADER
-           ========================================= */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease-out, visibility 0.8s;
-        }
-
-        .loader-icon {
-            font-size: 4rem;
-            color: var(--p);
-            animation: bounce 1s infinite alternate;
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-20px); }
+        [data-theme="light"] {
+            --bg-dark: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --glass-border: rgba(255, 143, 127, 0.2);
+            --nav-bg: rgba(241, 245, 249, 0.9);
         }
 
         /* =========================================
-           3. BASE
+           2. RESET & BASE
            ========================================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         
         body {
-            font-family: 'Quicksand', sans-serif;
-            background: var(--bg);
-            color: var(--txt);
+            font-family: var(--font-main);
+            background: var(--bg-dark);
+            color: var(--text-main);
             overflow-x: hidden;
             line-height: 1.6;
         }
 
-        #particles-js {
+        /* Animation de fond améliorée */
+        .bg-blobs {
             position: fixed;
-            inset: 0;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            opacity: 0.5;
+            overflow: hidden;
+            opacity: 0.15;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary);
+            filter: blur(120px);
+            animation: moveBlobs 25s infinite alternate ease-in-out;
+        }
+        @keyframes moveBlobs {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            50% { transform: translate(15%, 15%) scale(1.1); }
+            100% { transform: translate(-5%, 20%) scale(1); }
         }
 
         /* =========================================
-           4. NAVIGATION (STYLE PILLULE)
+           3. NAVIGATION (STYLE PREMIUM SAUMON)
            ========================================= */
-        .header-nav {
+        header {
             position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 1000px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            padding: 15px 40px;
-            border-radius: 100px;
+            top: 0; width: 100%;
+            padding: 20px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: var(--shadow);
-            transition: all 0.5s var(--curve);
-            border: 2px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            background: var(--nav-bg);
+            transition: 0.3s ease;
         }
+        header.scrolled { padding: 15px 8%; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
 
-        .nav--hidden { transform: translate(-50%, -180%); opacity: 0; }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.2rem;
+        .logo-wrap {
             display: flex;
             align-items: center;
             gap: 12px;
-            color: var(--p);
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--primary);
         }
+        .logo-wrap i { font-size: 1.7rem; }
 
-        .nav-menu { display: flex; list-style: none; gap: 10px; }
+        .nav-menu { display: flex; list-style: none; gap: 35px; }
         .nav-menu a {
             text-decoration: none;
-            color: var(--txt);
-            font-weight: 700;
+            color: var(--text-main);
+            font-weight: 600;
             font-size: 0.9rem;
-            padding: 10px 20px;
-            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--primary);
             transition: 0.3s;
         }
-        .nav-menu a:hover { background: var(--p); color: #fff; }
+        .nav-menu a:hover { color: var(--primary); }
+        .nav-menu a:hover::after { width: 100%; }
 
-        .theme-toggle {
+        .theme-switch {
+            font-size: 1.2rem;
+            color: var(--text-dim);
             cursor: pointer;
-            width: 45px; height: 45px;
-            border-radius: 50%;
-            border: none;
-            background: var(--p);
-            color: #fff;
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
-            transition: 0.3s var(--curve);
+            transition: 0.3s;
         }
-        .theme-toggle:hover { transform: rotate(45deg) scale(1.1); }
+        .theme-switch:hover { color: var(--primary); transform: rotate(15deg); }
 
         /* =========================================
-           5. HERO (VIBES DOUCES)
+           4. HERO SECTION (L'ACCUEIL)
            ========================================= */
         .hero {
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 150px 20px 80px;
-        }
-
-        .hero-tag {
-            background: #fff;
-            color: var(--p);
-            padding: 8px 24px;
-            border-radius: 100px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            display: inline-block;
+            padding: 0 5%;
+            background: radial-gradient(circle at center, rgba(255, 143, 127, 0.08) 0%, transparent 75%);
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 700;
+            font-size: clamp(2.8rem, 9vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1;
             margin-bottom: 25px;
-            letter-spacing: -1px;
+            animation: heroTextFade 1s ease-out;
         }
-
-        .hero h1 span {
-            color: var(--p);
-            position: relative;
-        }
-
-        .hero h1 span::after {
-            content: '';
-            position: absolute;
-            bottom: 10px; left: 0;
-            width: 100%; height: 12px;
-            background: var(--p);
-            opacity: 0.15;
-            z-index: -1;
-            border-radius: 10px;
-        }
+        .hero h1 span { color: var(--primary); }
 
         .hero p {
-            font-size: 1.2rem;
-            color: var(--txt-s);
-            max-width: 700px;
-            margin-bottom: 50px;
+            max-width: 650px;
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 35px;
             font-weight: 500;
+            animation: heroTextFade 1.2s ease-out;
         }
 
-        .btn-grp { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-        .btn {
+        .btn-main {
             padding: 16px 40px;
-            border-radius: 100px;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 25px var(--primary-glow);
+            transition: 0.4s;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            transition: 0.4s var(--curve);
-            border: none;
+            gap: 10px;
+            animation: heroTextFade 1.4s ease-out;
         }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 35px var(--primary-glow); }
 
-        .btn-p { background: var(--p); color: #fff; box-shadow: 0 15px 30px rgba(108, 92, 231, 0.25); }
-        .btn-p:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(108, 92, 231, 0.4); }
-
-        .btn-d { background: #5865F2; color: #fff; }
-        .btn-d:hover { transform: translateY(-5px); filter: brightness(1.1); }
+        @keyframes heroTextFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* =========================================
-           6. SECTIONS & BENTO ROUNDED
+           5. STATISTIQUES (LES COMPTEURS)
            ========================================= */
-        section { padding: 100px 5% 50px; max-width: 1200px; margin: 0 auto; }
-
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s var(--curve); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        .sec-head { text-align: center; margin-bottom: 70px; }
-        .sec-head h2 { font-size: 2.8rem; font-weight: 700; margin-bottom: 15px; }
-        .sec-head h2 span { color: var(--p); }
-
-        /* Stats Grid */
-        .grid-stats {
+        .stats-section {
+            padding: 100px 8%;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 30px;
         }
 
-        .card-stat {
-            background: var(--card);
-            padding: 50px 30px;
-            border-radius: 40px;
+        .stat-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
             text-align: center;
-            box-shadow: var(--shadow);
-            border: 2px solid transparent;
-            transition: 0.4s var(--curve);
+            transition: 0.4s ease;
         }
-        .card-stat:hover { border-color: var(--p); transform: scale(1.03); }
+        .stat-card:hover { transform: scale(1.03); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .stat-card i { font-size: 2.2rem; color: var(--primary); margin-bottom: 18px; }
+        .stat-card h3 { font-size: 3.2rem; font-weight: 800; margin-bottom: 5px; color: var(--text-main); }
+        .stat-card p { color: var(--text-dim); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
 
-        .card-stat i { font-size: 2.5rem; color: var(--p); margin-bottom: 25px; }
-        .count-val { font-size: 3.5rem; font-weight: 700; display: block; }
-        .card-stat label { font-weight: 700; color: var(--txt-s); letter-spacing: 1px; }
+        /* =========================================
+           6. SERVICES & OUTILS
+           ========================================= */
+        section { padding: 90px 8%; }
+        .section-head { text-align: center; margin-bottom: 60px; }
+        .section-head h2 { font-size: 2.8rem; font-weight: 700; margin-bottom: 10px; }
+        .section-head h2 span { color: var(--primary); }
+        .section-head p { color: var(--text-dim); max-width: 600px; margin: 0 auto; }
+        .section-head div { width: 50px; height: 3px; background: var(--primary); margin: 15px auto; border-radius: 2px; }
 
-        /* Team Mini */
-        .team-wrap {
+        .tools-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
         }
 
-        .team-mini {
-            background: var(--card);
-            padding: 35px 20px;
-            border-radius: 35px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: 0.4s;
-        }
-        .team-mini:hover { background: var(--p); }
-        .team-mini:hover * { color: #fff !important; }
-
-        .team-mini span { font-size: 2.2rem; font-weight: 700; color: var(--p); display: block; }
-
-        /* Services */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .s-card {
-            background: var(--card);
-            padding: 40px;
-            border-radius: 40px;
-            box-shadow: var(--shadow);
+        .tool-card {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 35px;
+            border: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            transition: 0.4s;
+            transition: 0.4s ease;
+        }
+        .tool-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .tool-card h3 { margin: 18px 0; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; font-weight: 700; }
+        .tool-card p { color: var(--text-dim); margin-bottom: 25px; flex-grow: 1; font-size: 0.95rem; }
+        
+        .tool-ip {
+            background: rgba(0,0,0,0.25);
+            padding: 8px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .s-card h3 { font-size: 1.5rem; display: flex; align-items: center; gap: 12px; }
-        .s-ip { background: var(--bg); padding: 12px 20px; border-radius: 20px; font-family: monospace; font-weight: 600; font-size: 0.85rem; color: var(--p); text-align: center; }
-        
-        .s-link {
-            margin-top: auto;
-            background: var(--txt);
-            color: #fff;
-            padding: 15px;
-            border-radius: 25px;
+        .tool-link {
+            padding: 14px;
+            border-radius: 12px;
             text-align: center;
             text-decoration: none;
             font-weight: 700;
+            font-size: 0.9rem;
             transition: 0.3s;
         }
-        .s-link:hover { opacity: 0.8; transform: scale(0.98); }
-
-        .maint-box {
-            grid-column: span 3;
-            background: #fff5f5;
-            border: 3px dashed var(--a);
-            padding: 40px;
-            border-radius: 40px;
-            text-align: center;
-            color: #d63031;
-        }
+        .link-p { background: var(--primary); color: white; box-shadow: 0 5px 15px var(--primary-glow); }
+        .link-p:hover { background: var(--accent); }
+        .link-s { background: #64748b; color: white; cursor: not-allowed; opacity: 0.7; }
 
         /* =========================================
-           7. ACTUALITÉS
+           7. NOUVEAUTÉS DU CAMPUS
            ========================================= */
-        .news-wrap {
+        .news-item {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            background: var(--bg-card);
+            margin-bottom: 18px;
+            padding: 22px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            border-right: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            transition: 0.3s ease;
+        }
+        .news-item:hover { transform: scale(1.02); background: rgba(30, 41, 59, 0.9); border-color: var(--primary); }
+        .news-num { font-size: 1.4rem; font-weight: 700; color: var(--primary); opacity: 0.5; }
+        .news-text h4 { font-weight: 700; margin-bottom: 3px; font-size: 1.1rem; }
+        .news-text p { font-size: 0.9rem; color: var(--text-dim); }
+
+        /* =========================================
+           8. TÉMOIGNAGES (LES AVIS)
+           ========================================= */
+        .testimonials {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 25px;
         }
-
-        .n-item {
-            background: var(--card);
-            border-radius: 45px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: 0.4s var(--curve);
+        .testi-box {
+            background: var(--bg-card);
+            padding: 35px;
+            border-radius: 20px;
+            position: relative;
+            border: 1px solid var(--glass-border);
+            transition: 0.4s ease;
         }
-        .n-item:hover { transform: translateY(-10px); }
-
-        .n-img { width: 100%; height: 250px; object-fit: cover; }
-        .n-info { padding: 40px; }
-        .n-info h3 { margin-bottom: 15px; font-size: 1.6rem; }
-        .n-btn { color: var(--p); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; }
-
-        /* =========================================
-           8. CTA & FOOTER
-           ========================================= */
-        .cta {
-            background: var(--p);
-            padding: 100px 40px;
-            border-radius: 60px;
-            text-align: center;
-            color: #fff;
-            margin: 100px 20px;
-            box-shadow: 0 30px 60px rgba(108, 92, 231, 0.3);
+        .testi-box:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .testi-box i.quote-icon {
+            position: absolute;
+            top: 20px; left: 20px;
+            font-size: 1.8rem;
+            color: var(--primary);
+            opacity: 0.15;
         }
+        .testi-content { font-style: italic; margin-bottom: 22px; color: var(--text-main); font-size: 1rem; position: relative; z-index: 1; }
+        .testi-user { display: flex; align-items: center; gap: 12px; }
+        .user-info h4 { font-weight: 700; color: var(--primary); font-size: 1rem; }
+        .user-info span { font-size: 0.8rem; color: var(--text-dim); font-weight: 500; }
 
-        .cta h2 { font-size: 3rem; margin-bottom: 20px; }
-        .btn-white { background: #fff; color: var(--p); margin-top: 30px; }
-
-        footer { text-align: center; padding: 80px 20px; font-weight: 600; color: var(--txt-s); }
-
-        /* =========================================
-           9. MODALS
-           ========================================= */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(15px);
-            display: none;
+        .special-box {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: white;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
-            padding: 20px;
+            text-align: center;
+            border: none;
         }
+        .special-box h3 { font-weight: 700; margin-bottom: 8px; font-size: 1.3rem; }
+        .special-box p { font-size: 0.85rem; opacity: 0.9; }
 
-        .modal-box {
-            background: var(--card);
-            width: 100%;
-            max-width: 750px;
+        /* =========================================
+           9. FORMATIONS (NOUVELLE SECTION)
+           ========================================= */
+        .formations-info {
+            text-align: center;
+            background: var(--bg-card);
             padding: 50px;
-            border-radius: 50px;
-            position: relative;
-            animation: pop 0.5s var(--curve);
+            border-radius: 20px;
+            border: 2px dashed var(--glass-border);
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
-        @keyframes pop { from { transform: scale(0.8); opacity: 0; } }
-        .close { position: absolute; top: 30px; right: 35px; font-size: 2.5rem; cursor: pointer; color: var(--p); line-height: 1; }
+        /* =========================================
+           10. PARTENARIATS (NOUVELLE SECTION + French Pub)
+           ========================================= */
+        .partner-box {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            border-top: 5px solid var(--secondary);
+            transition: 0.4s ease;
+        }
+        .partner-box:hover { border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .partner-box h3 { font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
+        .partner-box p { margin-bottom: 15px; font-size: 0.95rem; color: var(--text-dim); }
+        .partner-box strong { color: var(--text-main); font-weight: 600; }
+        
+        .partner-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #5865F2; /* Discord Blue */
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .partner-btn:hover { background: #4752C4; transform: scale(1.05); }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .grid-stats, .services-grid, .team-wrap { grid-template-columns: 1fr; }
-            .maint-box { grid-column: span 1; }
-            .header-nav { width: 95%; padding: 10px 20px; }
-            .nav-menu { display: none; } /* On pourrait ajouter un menu burger ici */
+        /* =========================================
+           11. FOOTER & CONTACT
+           ========================================= */
+        .footer-cta {
+            margin: 100px 8%;
+            padding: 70px;
+            background: var(--bg-card);
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-cta h2 { font-size: 2.8rem; margin-bottom: 15px; font-weight: 700; }
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #5865F2;
+            color: white;
+            padding: 18px 38px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 30px;
+            transition: 0.4s;
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.3);
+        }
+        .discord-btn:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 35px rgba(88, 101, 242, 0.4); }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* =========================================
+           12. ANIMATIONS & RESPONSIVE
+           ========================================= */
+        .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+            .tools-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            header { padding: 15px 5%; }
+            .nav-menu { display: none; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .footer-cta { padding: 40px 20px; }
+            .section-head h2 { font-size: 2.2rem; }
         }
     </style>
 </head>
-<body onload="siteInit()">
+<body onload="initSite()">
 
-    <div id="loader">
-        <i class="fa-solid fa-cloud-sun loader-icon"></i>
-        <h2 style="margin-top:20px; font-weight:700;">Campus Rosa Parks</h2>
+    <div class="bg-blobs">
+        <div class="blob" style="top: -10%; left: -10%; width: 45vw; height: 45vw;"></div>
+        <div class="blob" style="bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: var(--secondary); opacity: 0.08;"></div>
     </div>
 
-    <div id="particles-js"></div>
-
-    <nav class="header-nav" id="mainNav">
-        <div class="logo">
+    <header id="navbar">
+        <div class="logo-wrap">
             <i class="fa-solid fa-graduation-cap"></i>
-            Rosa Parks
+            ROSA PARKS
         </div>
         <ul class="nav-menu">
             <li><a href="#accueil">Accueil</a></li>
-            <li><a href="#stats">Le Campus</a></li>
+            <li><a href="#campus">Le Campus</a></li>
             <li><a href="#services">Services</a></li>
-            <li><a href="#news">Actualités</a></li>
+            <li><a href="#actus">Actualités</a></li>
         </ul>
-        <button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
-    </nav>
-
-    <header class="hero" id="accueil">
-        <div class="hero-tag reveal">EXCELLENCE • INNOVATION • AVENIR</div>
-        <h1 class="reveal">Apprendre Autrement au<br><span>Campus Rosa Parks</span></h1>
-        <p class="reveal">Bienvenue sur le portail officiel de notre communauté. Un espace conçu pour la réussite de nos élèves et la fluidité de nos échanges.</p>
-        <div class="btn-grp reveal">
-            <a href="#services" class="btn btn-p"><i class="fa-solid fa-rocket"></i> Nos Services</a>
-            <a href="https://discord.gg/rosaparks" target="_blank" class="btn btn-d"><i class="fa-brands fa-discord"></i> Rejoindre Discord</a>
+        <div class="theme-switch" onclick="toggleTheme()">
+            <i class="fa-solid fa-sun"></i>
         </div>
     </header>
 
-    <section id="stats" class="reveal">
-        <div class="sec-head">
-            <h2>L'Éducation en <span>Mouvement</span></h2>
+    <section class="hero" id="accueil">
+        <h1>Éduquer. <span>Inspirer</span>. Réussir.</h1>
+        <p>Le Campus Rosa Parks vous ouvre les portes de l'excellence académique et technologique. Un environnement moderne dédié à votre succès.</p>
+        <a href="#services" class="btn-main">Explorer nos services <i class="fa-solid fa-arrow-right"></i></a>
+    </section>
+
+    <section class="stats-section" id="campus">
+        <div class="stat-card reveal">
+            <i class="fa-solid fa-digital-ocean"></i>
+            <h3 class="count" data-target="3">0</h3>
+            <p>Plateformes Numériques</p>
         </div>
-        <div class="grid-stats">
-            <div class="card-stat">
-                <i class="fa-solid fa-microchip"></i>
-                <span class="count-val" data-val="3">0</span>
-                <label>Plateformes Digitales</label>
-            </div>
-            <div class="card-stat">
-                <i class="fa-solid fa-user-graduate"></i>
-                <span class="count-val" data-val="300">0</span>
-                <label>Talents Formés</label>
-            </div>
-            <div class="card-stat">
-                <i class="fa-solid fa-star"></i>
-                <span class="count-val" data-val="100">0</span>
-                <label>% Engagement RP</label>
-            </div>
+        <div class="stat-card reveal">
+            <i class="fa-solid fa-user-graduate"></i>
+            <h3 class="count" data-target="300">0</h3>
+            <p>Étudiants Inscrits</p>
+        </div>
+        <div class="stat-card reveal">
+            <i class="fa-solid fa-star"></i>
+            <h3 class="count" data-target="100">0</h3>
+            <p>% Engagement RP</p>
         </div>
     </section>
 
-    <section class="reveal">
-        <div class="sec-head">
-            <h2>Équipe <span>Pédagogique</span></h2>
-        </div>
-        <div class="team-wrap">
-            <div class="team-mini">
-                <span class="count-val" data-val="5">0</span>
-                <label>Admin</label>
-            </div>
-            <div class="team-mini">
-                <span class="count-val" data-val="3">0</span>
-                <label>Vie Scolaire</label>
-            </div>
-            <div class="team-mini">
-                <span class="count-val" data-val="39">0</span>
-                <label>Professeurs</label>
-            </div>
-            <div class="team-mini">
-                <span class="count-val" data-val="16">0</span>
-                <label>Élèves Référents</label>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="reveal">
-        <div class="sec-head">
+    <section id="services">
+        <div class="section-head reveal">
             <h2>Outils <span>Numériques</span></h2>
+            <div></div>
+            <p>Votre écosystème digital complet, accessible 24/7.</p>
         </div>
-        <div class="services-grid">
-            <div class="s-card">
-                <h3><i class="fa-solid fa-check-double" style="color:#6c5ce7"></i> Pronote</h3>
-                <p>Suivez vos notes, absences et devoirs en temps réel.</p>
-                <div class="s-ip">13.60.37.11:49300</div>
-                <a href="https://pronote.campus-rosaparks.fr/" target="_blank" class="s-link">Accéder au portail</a>
+
+        <div class="tools-grid">
+            <div class="tool-card reveal">
+                <h3><i class="fa-solid fa-book-open" style="color:#FF8F7F"></i> Pronote</h3>
+                <p>Suivi complet des notes, emplois du temps, absences et devoirs.</p>
+                <div class="tool-ip">IP: 13.60.37.11 Port TCP: 49300</div>
+                <a href="https://pronote.campus-rosaparks.fr/" target="_blank" class="tool-link link-p">Ouvrir Pronote</a>
             </div>
-            <div class="s-card">
-                <h3><i class="fa-solid fa-paper-plane" style="color:#00cec9"></i> Webmail</h3>
-                <p>Messagerie sécurisée dédiée aux personnels du campus.</p>
-                <div class="s-ip">Google Workspace Cloud</div>
-                <a href="https://accounts.google.com/" target="_blank" class="s-link" style="background:#00cec9">Gmail Campus</a>
+
+            <div class="tool-card reveal">
+                <h3><i class="fa-solid fa-envelope" style="color:#FFB5A7"></i> Webmail</h3>
+                <p>Communication professionnelle via Google Workspace Cloud.</p>
+                <div class="tool-ip">Service Google Cloud</div>
+                <a href="https://accounts.google.com/" target="_blank" class="tool-link link-p">Accéder à Gmail</a>
             </div>
-            <div class="s-card">
-                <h3><i class="fa-solid fa-fingerprint" style="color:#fab1a0"></i> Park'Connect</h3>
-                <p>Votre identité numérique centralisée pour tous nos services.</p>
-                <div class="s-ip">v1.2.5 - Stable</div>
-                <button onclick="openMaint()" class="s-link" style="background:#fab1a0; color:#fff; border:none; cursor:pointer">Authentification</button>
-            </div>
-            <div class="maint-box reveal">
-                <i class="fa-solid fa-info-circle" style="font-size:1.5rem; margin-bottom:10px; display:block"></i>
-                <p>Park'Connect est actuellement en cours de maintenance préventive.</p>
+
+            <div class="tool-card reveal">
+                <h3><i class="fa-solid fa-key" style="color:#FF6B6B"></i> Park'Connect</h3>
+                <p>Authentification centralisée. Service en maintenance.</p>
+                <div class="tool-ip">v1.2.5 [OFFLINE]</div>
+                <a href="#" class="tool-link link-s">Maintenance</a>
             </div>
         </div>
     </section>
 
-    <section id="news" class="reveal">
-        <div class="sec-head">
-            <h2>Le Fil d'<span>Actualité</span></h2>
+    <section id="temoignages">
+        <div class="section-head reveal">
+            <h2>Témoignages</h2>
+            <div></div>
         </div>
-        <div class="news-wrap" id="newsGrid"></div>
+
+        <div class="testimonials reveal">
+            <div class="testi-box reveal">
+                <i class="fa-solid fa-quote-left quote-icon"></i>
+                <p class="testi-content">"Le Campus Rosa Parks offre un cadre de travail unique et des outils technologiques de premier plan."</p>
+                <div class="testi-user">
+                    <div class="user-info">
+                        <h4>Hassani Noham</h4>
+                        <span>Assistant de Direction</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testi-box reveal">
+                <i class="fa-solid fa-quote-left quote-icon"></i>
+                <p class="testi-content">"Une pédagogie moderne qui nous prépare concrètement aux défis de demain."</p>
+                <div class="testi-user">
+                    <div class="user-info">
+                        <h4>Sarah L.</h4>
+                        <span>Élève Référente Terminale</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testi-box reveal">
+                <i class="fa-solid fa-quote-left quote-icon"></i>
+                <p class="testi-content">"L'accès simplifié aux outils numériques comme Pronote est un vrai plus pour l'organisation."</p>
+                <div class="testi-user">
+                    <div class="user-info">
+                        <h4>M. Dubois</h4>
+                        <span>Parent d'Élève</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testi-box special-box reveal">
+                <i class="fa-solid fa-circle-plus" style="font-size: 2.5rem; margin-bottom: 15px;"></i>
+                <h3>Et si c'était vous ?</h3>
+                <p>Rejoignez la communauté Rosa Parks et bâtissez votre avenir.</p>
+            </div>
+        </div>
     </section>
 
-    <div class="cta reveal">
+    <section id="formations">
+        <div class="section-head reveal">
+            <h2>Nos <span>Formations</span></h2>
+            <div></div>
+        </div>
+        <div class="reveal">
+            <div class="formations-info">
+                <i class="fa-solid fa- hourglass-half" style="font-size: 2rem; color: var(--secondary); margin-bottom: 15px; display: block;"></i>
+                Nos formations ne sont pas encore publiées. Revenez bientôt !
+            </div>
+        </div>
+    </section>
+
+    <section id="partenariats">
+        <div class="section-head reveal">
+            <h2>Nos <span>Partenariats</span></h2>
+            <div></div>
+            <p>Nous collaborons avec des projets innovants.</p>
+        </div>
+        
+        <div class="reveal">
+            <div class="partner-box">
+                <h3><i class="fa-solid fa-handshake-angle" style="margin-right:10px;"></i> French Pub</h3>
+                <p>Tu ne connais pas encore <strong>French Pub</strong> ? C’est un serveur créé pour aider les **autres serveurs** à se faire __connaître facilement__.</p>
+                <p>Sur **French Pub**, tu peux poster ta publicité gratuitement, sans aucune condition de membres. Que ton serveur ait **0 membre, 50 membres, 100 membres ou même plus de 1000 membres**, **tout le monde est le** __bienvenu pour partager sa pub et faire découvrir son projet__.</p>
+                <p><strong>Nous recherchons également des partenariats avec d'autres serveurs Discord.</strong></p>
+                <p>Notre serveur est : Un serveur communautaire, un serveur à l’écoute de ses membres, un endroit pour promouvoir ton serveur gratuitement, un serveur ouvert aux partenariats.</p>
+                <p>Nous recherchons aussi du staff sérieux et motivé pour aider à développer le serveur et maintenir une bonne ambiance.</p>
+                
+                <a href="https://discord.gg/RaMHWrczgN" target="_blank" class="partner-btn">
+                    <i class="fa-brands fa-discord"></i> Rejoindre French Pub dès maintenant !
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="actus">
+        <div class="section-head reveal">
+            <h2>Fil d'<span>Actualité</span></h2>
+            <div></div>
+        </div>
+        
+        <div class="reveal ActuGrid">
+            <div class="news-item">
+                <span class="news-num">01</span>
+                <div class="news-text">
+                    <h4>Ouverture du CA</h4>
+                    <p>Candidatures ouvertes pour le Conseil d'Administration.</p>
+                </div>
+            </div>
+            <div class="news-item">
+                <span class="news-num">02</span>
+                <div class="news-text">
+                    <h4>Nouveau Service ENT</h4>
+                    <p>Déploiement imminent d'un module de gestion de projet.</p>
+                </div>
+            </div>
+            <div class="news-item">
+                <span class="news-num">03</span>
+                <div class="news-text">
+                    <h4>Recrutement Direction</h4>
+                    <p>Campagne de recrutement de nouveaux cadres à venir.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-cta reveal">
         <h2>Une demande particulière ?</h2>
         <p>Notre secrétariat est à votre écoute pour toute information.</p>
-        <a href="mailto:ce.0227235a@campus-rosaparks.fr" class="btn btn-white">Écrire au Secrétariat</a>
+        <a href="https://discord.gg/rosaparks" target="_blank" class="discord-btn">
+            <i class="fa-brands fa-discord"></i> Écrire au Secrétariat
+        </a>
     </div>
 
     <footer>
-        <p>© 2026 Campus Rosa Parks • Excellence & Discipline</p>
-        <p style="margin-top:15px; opacity:0.4; font-size:0.8rem">Design System : Quicksand-Pill • Dev by NyxX</p>
+        <p>© 2026 Campus Rosa Parks • Excellence & Innovation</p>
+        <p style="margin-top:8px; opacity: 0.3; font-size: 0.75rem;">Design by NyxX • All Rights Reserved.</p>
     </footer>
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal-box">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // --- LOGIQUE IDENTIQUE ---
-        function siteInit() {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.visibility = 'hidden', 800);
-            }, 1200);
-            
-            initNews();
-            scrollReveal();
-            initParticles();
+        function initSite() {
+            handleScroll();
+            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('scroll', navbarAnimation);
         }
 
-        function initParticles() {
-            particlesJS("particles-js", {
-                "particles": {
-                    "number": { "value": 50 },
-                    "color": { "value": "#6c5ce7" },
-                    "shape": { "type": "circle" },
-                    "opacity": { "value": 0.15 },
-                    "size": { "value": 4 },
-                    "line_linked": { "enable": true, "distance": 150, "color": "#6c5ce7", "opacity": 0.1, "width": 1 },
-                    "move": { "enable": true, "speed": 1 }
-                }
-            });
-        }
-
-        const news = [
-            {
-                title: "Partenariat Orion Host",
-                short: "Une infrastructure solide pour nos services numériques...",
-                full: "🚀 Une grande étape ! Notre campus rejoint officiellement Orion Host pour améliorer nos services, renforcer nos performances et offrir de nouvelles opportunités. 🎓🔥",
-                img: "https://cdn.discordapp.com/attachments/1430479370107093113/1467506596253929637/image.png?ex=6980a185&is=697f5005&hm=99009fe0968b9da9d5b3f1a2c669a574fb29039283515d5ed054a1233feff0dd"
-            },
-            {
-                title: "Google Workspace",
-                short: "Le déploiement des comptes @campus-rosaparks est terminé...",
-                full: "Nous sommes heureux de vous annoncer l’arrivée d’un nouveau service Google Workspace 📊 pour une meilleure gestion des e-mails et un travail collaboratif efficace 💙✨.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Google_Workspace_Logo.svg/langfr-3840px-Google_Workspace_Logo.svg.png"
-            }
-        ];
-
-        function initNews() {
-            const grid = document.getElementById('newsGrid');
-            news.forEach((n, i) => {
-                grid.innerHTML += `
-                    <div class="n-item reveal">
-                        <img src="${n.img}" class="n-img">
-                        <div class="n-info">
-                            <h3>${n.title}</h3>
-                            <p style="color:var(--txt-s); margin-bottom:20px; font-size:1rem;">${n.short}</p>
-                            <span class="n-btn" onclick="openNews(${i})">En savoir plus <i class="fa-solid fa-chevron-right"></i></span>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        let prevScroll = window.pageYOffset;
-        window.onscroll = function() {
-            let currentScroll = window.pageYOffset;
-            const nav = document.getElementById("mainNav");
-            if (prevScroll > currentScroll) { nav.classList.remove("nav--hidden"); } 
-            else { if(currentScroll > 100) nav.classList.add("nav--hidden"); }
-            prevScroll = currentScroll;
-            scrollReveal();
-        };
-
-        function scrollReveal() {
+        function handleScroll() {
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(el => {
-                const windowHeight = window.innerHeight;
-                const revealTop = el.getBoundingClientRect().top;
-                if (revealTop < windowHeight - 50) {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 80) {
                     el.classList.add('active');
-                    if(el.querySelector('[data-val]')) animateNumbers(el);
+                    if(el.querySelector('.count')) animateCount(el.querySelector('.count'));
                 }
             });
         }
 
-        function animateNumbers(parent) {
-            const nums = parent.querySelectorAll('[data-val]');
-            nums.forEach(n => {
-                const target = +n.getAttribute('data-val');
-                if(n.innerText === "0") {
-                    let count = 0;
-                    const step = target / 50;
-                    const update = () => {
-                        count += step;
-                        if(count < target) {
-                            n.innerText = Math.ceil(count);
-                            setTimeout(update, 30);
-                        } else { n.innerText = target; }
-                    };
-                    update();
-                }
-            });
+        function navbarAnimation() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
         }
 
-        function openNews(idx) {
-            const n = news[idx];
-            document.getElementById('modalContent').innerHTML = `
-                <img src="${n.img}" style="width:100%; border-radius:30px; margin-bottom:30px; box-shadow:var(--shadow)">
-                <h2 style="margin-bottom:20px; font-size:2rem;">${n.title}</h2>
-                <p style="color:var(--txt-s); font-size:1.2rem; line-height:1.8;">${n.full}</p>
-            `;
-            document.getElementById('modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
+        function animateCount(el) {
+            const target = +el.getAttribute('data-target');
+            const count = +el.innerText;
+            const speed = target / 80; // Vitesse adaptée
 
-        function openMaint() {
-            document.getElementById('modalContent').innerHTML = `
-                <div style="text-align:center; padding:30px;">
-                    <div style="width:100px; height:100px; background:#fff5f5; color:#d63031; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px; font-size:3rem;">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <h2 style="font-size:2rem;">Accès Restreint</h2>
-                    <p style="color:var(--txt-s); margin-top:15px; font-size:1.1rem;">La plateforme Park'Connect est en cours de mise à jour. Les accès seront rétablis prochainement.</p>
-                </div>
-            `;
-            document.getElementById('modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            if (count < target) {
+                el.innerText = Math.ceil(count + speed);
+                setTimeout(() => animateCount(el), 20);
+            } else { el.innerText = target; }
         }
 
         function toggleTheme() {
             const h = document.documentElement;
-            const isDark = h.getAttribute('data-theme') === 'dark';
-            h.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            document.querySelector('.theme-toggle i').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+            const theme = h.getAttribute('data-theme');
+            const newTheme = theme === 'dark' ? 'light' : 'dark';
+            h.setAttribute('data-theme', newTheme);
+            document.querySelector('.theme-switch i').className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
     </script>
 </body>
